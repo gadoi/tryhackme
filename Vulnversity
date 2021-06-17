@@ -1,3 +1,21 @@
+#Task 2 - Reconnaissance 
+- Scan the box, how many ports are open?
+hint:nmap -sV -sC $IP
+6
+
+- What version of the squid proxy is running on the machine?
+3.5.12
+
+- How many ports will nmap scan if the flag -p-400 was used?
+400
+
+- Using the nmap flag -n what will it not resolve?
+DNS
+
+- What is the most likely operating system this machine is running?
+
+
+
 
 
 https://0n3z3r0n3.medium.com/tryhackme-vulnversity-1b1c7d96bca4
