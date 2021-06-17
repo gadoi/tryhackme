@@ -30,3 +30,6 @@ https://sectools.tw/?s=tryhackme
 https://infosecwriteups.com/tryhackme-thats-the-ticket-walkthrough-6e26cc9d602b
 https://tryhackme.com/room/thatstheticket
 
+#install man command
+apt search manpages
+apt install manpages
