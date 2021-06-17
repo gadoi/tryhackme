@@ -32,4 +32,9 @@ https://tryhackme.com/room/thatstheticket
 
 #install man command
 apt search manpages
+apt search manpages | more
+apt-cache search manpages
+apt search man | grep -i db
+apt-cache search manpages | egrep 'manpages-(dev|posix)'
 apt install manpages
+sudo apt install man-db manpages-posix
