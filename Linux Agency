@@ -72,12 +72,41 @@ chmod +x flag
 mission17{49f8d1348a1053e221dfe7ff99f5cbf4}
 
 
+- What is the mission18 flag?
+hint: javac flag.java
+java flag 
+mission18{f09760649986b489cda320ab5f7917e8}
+
+
+- What is the mission19 flag?
+hint: ruby flag.rb 
+mission19{a0bf41f56b3ac622d808f7a4385254b7}
+
+
+- What is the mission20 flag?
+hint: gcc flag.c -o flag
+mission20{b0482f9e90c8ad2421bf4353cd8eae1c}
+
+
+- What is the mission21 flag?
+hint: python flag.py 
+mission21{7de756aabc528b446f6eb38419318f0c}
 
 
 - What is the mission22 flag?
 cat .bashrc
 echo "fWZhYTk0ZDI0YjQ4OTZlMmE2ZGU5ODgwYmU0N2FhYzQyezIybm9pc3NpbQo="|base64 -d|rev
+or: bash -i
 mission22{24caa74eb0889ed6a2e6984b42d49aaf}
+
+
+- What is the mission23 flag?
+hint: import pty; pty.spawn("/bin/bash")
+ls -la
+mission23{3710b9cb185282e3f61d2fd8b1b4ffea}
+
+
+- What is the mission24 flag?
 
 
 
