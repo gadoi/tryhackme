@@ -107,6 +107,12 @@ mission23{3710b9cb185282e3f61d2fd8b1b4ffea}
 
 
 - What is the mission24 flag?
+hint: cat messenge.txt
+cat /etc/hosts
+curl linuxagency | grep "mission"
+or curl http://mission24.com | grep "mission"
+mission24{dbaeb06591a7fd6230407df3a947b89c}
+
 
 
 
