@@ -20,5 +20,68 @@ mission6{1fa67e1adc244b5c6ea711f0c9675fde}
 - What is the mission7 flag?
 mission7{53fd6b2bad6e85519c7403267225def5}
 
+- What is the mission8 flag?
+mission8{3bee25ebda7fe7dc0a9d2f481d10577b}
+
+- What is the mission9 flag?
+hint: find / -type f -user mission8 -name "*flag*" 2>/dev/null
+mission9{ba1069363d182e1c114bef7521c898f5}
+
+- What is the mission10 flag?
+hint: grep -i "mission10" rockyou.txt
+mission10{0c9d1c7c5683a1a29b05bb67856524b6}
+
+- What is the mission11 flag?
+hint: find . -type f -exec cat {} \; | grep "mission11"
+mission11{db074d9b68f06246944b991d433180c0}
+
+- What is the mission12 flag?
+hint: cat /home/mission11/.bashrc | grep "flag"
+echo $flag
+mission12{f449a1d33d6edc327354635967f9a720}
+
+- What is the mission13 flag?
+hint: ls -la
+chmod a+r flag.txt
+mission13{076124e360406b4c98ecefddd13ddb1f}
+
+- What is the mission14 flag?
+hint: ls -la
+chmod a+x+w
+cat flag.txt | base64 -d
+mission14{d598de95639514b9941507617b9e54d2}
+
+- What is the mission15 flag?
+hint: Flag.txt is in binary, and convert it into ascii using ASCII,Hex,Binary,Decimal,Base64 converter 
+https://www.rapidtables.com/convert/number/ascii-hex-bin-dec-converter.html
+cat flag.txt 
+mission15{fc4915d818bfaeff01185c3547f25596}
+
+- What is the mission16 flag?
+hint: cat flag.txt
+cat flag.txt | xxd -r -p
+or: Enter hex file https://www.rapidtables.com/convert/number/ascii-hex-bin-dec-converter.html
+mission16{884417d40033c4c2091b44d7c26a908e}
+
+- What is the mission17 flag?
+hint: ls -la
+file flag
+---> file sh
+chmod +x flag 
+./flag
+mission17{49f8d1348a1053e221dfe7ff99f5cbf4}
+
+
+
+
+- What is the mission22 flag?
+cat .bashrc
+echo "fWZhYTk0ZDI0YjQ4OTZlMmE2ZGU5ODgwYmU0N2FhYzQyezIybm9pc3NpbQo="|base64 -d|rev
+mission22{24caa74eb0889ed6a2e6984b42d49aaf}
+
+
+
+
+
 http://wuvel.net/tryhackme/linux-agency/
 https://hamdisevben.medium.com/tryhackme-linux-agency-writeup-walkthrough-more-than-linux-f218dcc5ed2b
