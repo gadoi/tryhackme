@@ -115,7 +115,51 @@ mission24{dbaeb06591a7fd6230407df3a947b89c}
 
 
 
+- What is the mission25 flag?
+hint:./bribe
+cat .viminfo
+export pocket=money
+./bribe
+mission25{61b93637881c87c71f220033b22a921b}
 
+
+- What is the mission26 flag?
+hint: ls
+echo $PATH
+/bin/ls ../mission26
+/bin/cat ../mission26/flag.txt
+mission26{cb6ce977c16c57f509e9f8462a120f00}
+
+- What is the mission27 flag?
+hint: file flag.jpg
+strings flag.gpg | grep mission
+mission27{444d29b932124a48e7dddc0595788f4d}
+
+- What is the mission28 flag?
+hint: gzip -d flag.mp3.mp4.exe.elf.tar.php.ipynb.py.rb.html.css.zip.gz.jpg.png.gz
+or gunzip flag.mp3.mp4.exe.elf.tar.php.ipynb.py.rb.html.css.zip.gz.jpg.png.gz
+string flag.mp3.mp4.exe.elf.tar.php.ipynb.py.rb.html.css.zip.gz.jpg.png | grep mission
+mission28{03556f8ca983ef4dc26d2055aef9770f}
+
+
+- What is the mission29 flag?
+hint: exec "/bin/bash"
+cat cat txt.galf | rev
+mission29{8192b05d8b12632586e25be74da2fff1}
+
+
+- What is the mission30 flag?
+hint: grep -iRl mission30{ 2> /dev/null
+cat .htpasswd | grep mission
+mission30{d25b4c9fac38411d2fcb4796171bda6e}
+
+
+- What is viktor's Flag?
+hint: cd ../mission30
+cd Escalator
+ls -alh
+git log
+viktor{b52c60124c0f8f85fe647021122b3d9a}
 
 
 http://wuvel.net/tryhackme/linux-agency/
