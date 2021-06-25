@@ -1,0 +1,24 @@
+#Task 1 Ninja Skills 
+- Which of the above files are owned by the best-group group(enter the answer separated by spaces in alphabetical order)
+hint: find / -group best-group 2>/dev/nul
+or find / -ls 2>/dev/null | grep -w -e 8V2L -e bny0 -e c4ZX -e D8B3 -e FHl1 -e oiMO -e PFbD -e rmfX -e SRSq -e uqyw -e v2Vb -e X1Uy | grep "best-group"
+d8b3 v2vb
+
+
+- Which of these files contain an IP address?
+hint: find / 2>/dev/null | grep -w -e 8V2L -e bny0 -e c4ZX -e D8B3 -e FHl1 -e oiMO -e PFbD -e rmfX -e SRSq -e uqyw -e v2Vb -e X1Uy | sort >> note.txt
+There is only one missing is“bny0” file.
+find / -exec grep "*bny0*" {} \; 2>/dev/null
+Takes too long.. Never mind.. just proceed
+cat note.txt | while read line; do echo $line; cat $line | grep -Eo "([0-9]{1,3}[\.]){3}[0-9]{1,3}"; done
+or
+grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' $(cat note.txt)
+oiMO
+
+
+- Which file has the SHA1 hash of 9d54da7584015647ba052173b84d45e8007eba94
+hint: cat note.txt | while read line; do echo $line; sha1sum $line | grep 9d54da7584015647ba052173b84d45e8007eba94; done
+
+https://blog.wantedlink.de/?p=11613
+https://qiita.com/v_avenger/items/e94e31a53258737069dd
+https://dhilipsanjay.gitbook.io/ctfs/tryhackme/tryhackme/ninjaskills
