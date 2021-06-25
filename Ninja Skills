@@ -22,3 +22,5 @@ hint: cat note.txt | while read line; do echo $line; sha1sum $line | grep 9d54da
 https://blog.wantedlink.de/?p=11613
 https://qiita.com/v_avenger/items/e94e31a53258737069dd
 https://dhilipsanjay.gitbook.io/ctfs/tryhackme/tryhackme/ninjaskills
+https://hafiqiqmal93.medium.com/tryhackme-ninja-skills-e584016c512c
+https://gitlab.com/ctf-and-walkthrough-writeups/tryhackme/-/tree/master/Ninja%20Skills
