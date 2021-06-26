@@ -1,23 +1,54 @@
 #Task 1 Ninja Skills 
 - Which of the above files are owned by the best-group group(enter the answer separated by spaces in alphabetical order)
-hint: find / -group best-group 2>/dev/nul
+hint: https://www.tecmint.com/35-practical-examples-of-linux-find-command/
+find / -type f \( -name 8V2L -o -name bny0 -o -name c4ZX -o -name D8B3 -o -name FHl1 -o -name oiM0 -o -name PFbD -o -name rmfX -o -name SRSq -o -name uqyw -o -name v2Vb -o -name X1Uy \) 2>>/dev/null
+search folder in "best-group"
+find / -group best-group 2>/dev/nul
 or find / -ls 2>/dev/null | grep -w -e 8V2L -e bny0 -e c4ZX -e D8B3 -e FHl1 -e oiMO -e PFbD -e rmfX -e SRSq -e uqyw -e v2Vb -e X1Uy | grep "best-group"
+find / -type f \( -name 8V2L -o -name bny0 -o -name c4ZX -o -name D8B3 -o -name FHl1 -o -name oiMO -o -name PFbD -o -name rmfX -o -name SRSq -o -name uqyw -o -name v2Vb -o -name X1Uy \) -exec ls -ilrt {} \; 2>>/dev/null
 d8b3 v2vb
 
 
 - Which of these files contain an IP address?
-hint: find / 2>/dev/null | grep -w -e 8V2L -e bny0 -e c4ZX -e D8B3 -e FHl1 -e oiMO -e PFbD -e rmfX -e SRSq -e uqyw -e v2Vb -e X1Uy | sort >> note.txt
-There is only one missing is“bny0” file.
+hint: https://www.shellhacks.com/regex-find-ip-addresses-file-grep/
+find / 2>/dev/null | grep -w -e 8V2L -e bny0 -e c4ZX -e D8B3 -e FHl1 -e oiMO -e PFbD -e rmfX -e SRSq -e uqyw -e v2Vb -e X1Uy | sort >> note.txt
+There is only one missing is “bny0” file.
 find / -exec grep "*bny0*" {} \; 2>/dev/null
 Takes too long.. Never mind.. just proceed
 cat note.txt | while read line; do echo $line; cat $line | grep -Eo "([0-9]{1,3}[\.]){3}[0-9]{1,3}"; done
 or
 grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' $(cat note.txt)
+or find / -type f \( -name 8V2L -o -name bny0 -o -name c4ZX -o -name D8B3 -o -name FHl1 -o -name oiMO -o -name PFbD -o -name rmfX -o -name SRSq -o -name uqyw -o -name v2Vb -o -name X1Uy \) -exec egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' * {} \; 2>>/dev/null
 oiMO
 
 
 - Which file has the SHA1 hash of 9d54da7584015647ba052173b84d45e8007eba94
-hint: cat note.txt | while read line; do echo $line; sha1sum $line | grep 9d54da7584015647ba052173b84d45e8007eba94; done
+hint: -exec sha1sum {} \;
+or find / -type f \( -name 8V2L -o -name bny0 -o -name c4ZX -o -name D8B3 -o -name FHl1 -o -name oiMO -o -name PFbD -o -name rmfX -o -name SRSq -o -name uqyw -o -name v2Vb -o -name X1Uy \) -exec sha1sum {} \; 2>>/dev/null
+cat note.txt | while read line; do echo $line; sha1sum $line | grep 9d54da7584015647ba052173b84d45e8007eba94; done
+sha1sum $(cat note.txt) | grep 9d54da7584015647ba052173b84d45e8007eba94
+c4ZX
+
+- Which file contains 230 lines?
+hint:-exec wc -l 230 {} \;
+https://www.tecmint.com/wc-command-examples/
+find / -type f \( -name 8V2L -o -name bny0 -o -name c4ZX -o -name D8B3 -o -name FHl1 -o -name oiMO -o -name PFbD -o -name rmfX -o -name SRSq -o -name uqyw -o -name v2Vb -o -name X1Uy \) -exec grep wc -l 230 {} \; 2>>/dev/null
+or grep -c ^ $(cat note.txt)
+bny0
+
+
+- Which file's owner has an ID of 502?
+hint: -exec ls -l {} \;
+find / -type f \( -name 8V2L -o -name bny0 -o -name c4ZX -o -name D8B3 -o -name FHl1 -o -name oiMO -o -name PFbD -o -name rmfX -o -name SRSq -o -name uqyw -o -name v2Vb -o -name X1Uy \) -exec ls -ln {} \; 2>>/dev/null
+or find / -uid 502 -ls 2>/dev/null
+X1Uy
+
+
+- Which file is executable by everyone?
+hint: find / -ls 2>/dev/null | grep -w -e 8V2L -e bny0 -e c4ZX -e D8B3 -e FHl1 -e oiMO -e PFbD -e rmfX -e SRSq -e uqyw -e v2Vb -e X1Uy
+or find / -type f \( -name 8V2L -o -name bny0 -o -name c4ZX -o -name D8B3 -o -name FHl1 -o -name oiMO -o -name PFbD -o -name rmfX -o -name SRSq -o -name uqyw -o -name v2Vb -o -name X1Uy \) -exec ls -ln {} \; 2>>/dev/null
+8V2L
+
 
 https://blog.wantedlink.de/?p=11613
 https://qiita.com/v_avenger/items/e94e31a53258737069dd
