@@ -1,0 +1,66 @@
+#Task 2 How do we load websites? 
+- What request verb is used to retrieve page content?
+get
+
+- What port do web servers normally listen on?
+80
+
+- What's responsible for making websites look fancy?
+css
+
+
+#Task 3 More HTTP - Verbs and request formats 
+- What verb would be used for a login?
+post
+
+
+- What verb would be used to see your bank balance once you're logged in?
+get
+
+
+- Does the body of a GET request matter? Yea/Nay
+Nay
+
+
+- What's the status code for "I'm a teapot"?
+hint:https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+418
+
+
+- What status code will you get if you need to authenticate to access some content, and you're unauthenticated?
+hint:https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+401
+
+#Task 5 Mini CTF 
+Tasks
+There's a web server running on http://10.10.207.246:8081. Connect to it and get the flags!
+
+    GET request. Make a GET request to the web server with path /ctf/get
+    POST request. Make a POST request with the body "flag_please" to /ctf/post
+    Get a cookie. Make a GET request to /ctf/getcookie and check the cookie the server gives you
+    Set a cookie. Set a cookie with name "flagpls" and value "flagpls" in your devtools (or with curl!) and make a GET request to /ctf/sendcookie
+    
+ 
+- What's the GET flag?
+hint:curl --request GET http://ip:8081/ctf/get
+thm{162520bec925bd7979e9ae65a725f99f}
+
+- What's the POST flag?
+hint: curl --reuest POST --data "flag_please" http://ip:8081/ctf/post
+or curl http://ip/ctf/post -X POST -d "flag_please"
+thm{3517c902e22def9c6e09b99a9040ba09}
+
+- What's the "Get a cookie" flag?
+hint: curl --request GET -c cookie.txt http://ip:8081/ctf/getcookie
+of curl http://ip:8081/ctf/getcookie -c cookie.txt
+thm{91b1ac2606f36b935f465558213d7ebd}
+
+
+- What's the "Set a cookie" flag?
+hint: curl --cookie flagpls=flagpls http://ip:8081//ctf/sendcookie
+thm{c10b5cb7546f359d19c747db2d0f47b3}
+
+
+https://tryhackme.com/room/webfundamentals
+https://juliette1012.github.io/posts/THM-Web-Fundamentals/
+https://ratiros01.medium.com/tryhackme-web-fundamentals-cc4681ead884
