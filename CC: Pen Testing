@@ -1,0 +1,37 @@
+#Task 13 [Section 4 - Hash Cracking]: hashcat 
+- What flag sets the mode.
+hint: hashcat --help
+-m
+
+
+- What flag sets the "attack mode"
+hint: hashcat --help | grep attack
+-a
+
+
+- What is the attack mode number for Brute-force    
+hint: hashcat --help | grep Brute
+3
+
+
+- What is the mode number for SHA3-512    
+hint: hashcat --help | grep SHA3-512
+17600
+
+
+- Crack This Hash:56ab24c15b72a457069c5ea42fcfc640
+Type: MD5
+hint: hashcat --force 56ab24c15b72a457069c5ea42fcfc640 -m 0 -a 3
+happy
+
+
+
+- Crack this hash: 4bc9ae2b9236c2ad02d81491dcb51d5f
+Type: MD4
+hint: hashcat --help | grep MD4
+hashcat --force 4bc9ae2b9236c2ad02d81491dcb51d5f -m 900 -a 3
+
+
+https://tryhackme.com/room/ccpentesting
+https://vicksecurity.com/tryhackme/cc-pentesting-tryhackme-writeup-walkthrough/
+https://blog.raw.pm/en/TryHackMe-CC-Pen-Testing-write-up/
