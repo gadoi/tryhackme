@@ -452,14 +452,16 @@ nyan:046385855FC9580393853D8E81F240B66FE9A7B8
 vi hash
 john hash --wordlist=/usr/share/wordlists/rockyou.txt --format=raw-sha1
 nyan
-
+ssh nyan@10.10.114.27
+cat user.txt
+supernootnoot
 
 - What is the root.txt
 hint:ssh nyan@10.10.114.27
 sudo -l
 sudo su
-cat user.txt
-supernootnoot
+cat /root/root.txt
+congratulations!!!!
 
 https://docplayer.net/198613531-Tryhackme-cc-pen-testing-completed-winter-2020.html
 https://fieldraccoon.github.io/misc%20posts%20not%20released%20yet/priv-esc-pre-writeup/
