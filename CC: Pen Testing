@@ -447,6 +447,10 @@ or gobuster dir -u http://$IP/ -w /usr/share/wordlists/dirbuster/directory-list-
 or dirb http://10.10.114.27/secret /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -X .txt,.php,.html
 other wordlist: dirb http://10.10.114.27/secret /usr/share/wordlists/dirb/common.txt -X .txt,.php,.html
 
+or other tool: 
+ffuf -u http://10.10.196.95/FUZZ -c -w /usr/share/wordlists/dirb/common.txt
+ffuf -u http://10.10.196.95/secret/FUZZ -c -w /usr/share/wordlists/dirb/common.txt -e .txt -fc 403
+
 gobuster dir -u http://10.10.196.95/secret -w /usr/share/wordlists/dirb/common.txt -x txt  <--ok
 dirb http://10.10.196.95/secret /usr/share/wordlists/dirb/common.txt -X .txt  <--ok
 
