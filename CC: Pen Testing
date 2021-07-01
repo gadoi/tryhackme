@@ -445,7 +445,10 @@ gobuster dir -u $IP -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.
 gobuster dir -u http://$IP/secret -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 or gobuster dir -u http://$IP/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 64 -q /secret
 or dirb http://10.10.114.27/secret /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -X .txt,.php,.html
-other wordlist dirb http://10.10.114.27/secret /usr/share/wordlists/dirb/common.txt -X .txt,.php,.html
+other wordlist: dirb http://10.10.114.27/secret /usr/share/wordlists/dirb/common.txt -X .txt,.php,.html
+
+gobuster dir -u http://10.10.196.95/secret -w /usr/share/wordlists/dirb/common.txt -x txt  <--ok
+dirb http://10.10.196.95/secret /usr/share/wordlists/dirb/common.txt -X .txt  <--ok
 
 http://10.10.114.27/secret/secret.txt
 nyan:046385855FC9580393853D8E81F240B66FE9A7B8
