@@ -17,8 +17,10 @@ dirsearch -u 10.10.179.176 -e * -r
 	-e is some specified extensions, in this case I choose to look for all/any extensions it can find
 	-r specifies the search to recurse 1 layer further for whatever it finds
   
-or gobuster 
-or dirb
+or gobuster dir -u http://$ip -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+or dirb http://$ip/ /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+or ffuf -u http://$ip/FUZZ -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+
 ---> robots.txt
 login.php...
 
