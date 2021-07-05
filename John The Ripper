@@ -147,6 +147,20 @@ THM{w3ll_d0n3_h4sh_r0y4l}
 #Task 10 Cracking Password Protected RAR Archives 
 
 
+#Task 11 Cracking SSH Keys with John 
+- What is the SSH private key password?
+hint: git clone https://github.com/openwall/john.git
+cd john
+cd run
+python3 ssh2john idrsa.id_rsa >ssh.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt ssh.txt
+john --show hash.txt
+mango
+
+
+
+
+
 https://tryhackme.com/room/johntheripper0
 
 
