@@ -1,0 +1,148 @@
+#Task 2 Setting up John the Ripper 
+- What is the most popular extended version of John the Ripper?
+Jumbo John
+
+
+#Task 3 Wordlists 
+- What website was the rockyou.txt wordlist created from a breach on?
+rockyou.com
+
+
+#Task 4 Cracking Basic Hashes 
+- What type of hash is hash1.txt?
+hint:  apt install hash-identifier
+hash-identifier
+2e728dd31fb5949bc39cac5a9f066498
+or hashid -m 2e728dd31fb5949bc39cac5a9f066498
+or https://www.tunnelsup.com/hash-analyzer/
+MD5
+
+- What is the cracked value of hash1.txt?
+hint:john --list=formats | grep -iF "md5"
+john --format=raw-md5 --wordlist=/usr/share/wordlists/rockyou.txt hash1.txt
+john --show --format=raw-md5 hash1.txt
+biscuit
+
+
+- What type of hash is hash2.txt?
+hint: hash-identifier
+1A732667F3917C0F4AA98BB13011B9090C6F8065
+hashid -m 1A732667F3917C0F4AA98BB13011B9090C6F8065
+https://www.tunnelsup.com/hash-analyzer/
+SHA1
+
+
+- What is the cracked value of hash2.txt
+hint: john --list=formats | grep -iF "sha1"
+john --format=raw-sha1 --wordlist=/usr/share/wordlists/rockyou.txt hash2.txt
+john --format=raw-sha1 hash2.txt
+kangeroo
+
+
+- What type of hash is hash3.txt?
+cat .\hash3.txt
+hashid -m D7F4D3CCEE7ACD3DD7FAD3AC2BE2AAE9C44F4E9B7FB802D73136D4C53920140A
+hash-identifier
+D7F4D3CCEE7ACD3DD7FAD3AC2BE2AAE9C44F4E9B7FB802D73136D4C53920140A
+https://www.tunnelsup.com/hash-analyzer/
+SHA256
+
+
+- What is the cracked value of hash3.txt
+hint: john --list=formats | grep -iF "sha256"
+john --format=raw-sha256 --wordlist=/usr/share/wordlists/rockyou.txt hash3.txt
+john --show --format=raw-sha256 hash3.txt
+microphone
+
+
+- What type of hash is hash4.txt?
+cat hash4.txt
+hashid -m c5a60cc6bbba781c601c5402755ae1044bbf45b78d1183cbf2ca1c865b6c792cf3c6b87791344986c8a832a0f9ca8d0b4afd3d9421a149d57075e1b4e93f90bf
+cat hash4.txt | hash-identifier
+whirlpool
+
+- What is the cracked value of hash4.txt
+hint: john --list=formats | grep -iF "whirlpool"
+john --format=whirlpool --wordlist=/usr/share/wordlists/rockyou.txt hash4.txt
+john --show --format=whirlpool hash4.txt
+colossal
+
+
+#Task 5 Cracking Windows Authentication Hashes 
+- What do we need to set the "format" flag to, in order to crack this?
+hint: cat ntlm.txt | hash-identifier
+cat ntlm.txt | hashid -m
+john --list=formats | grep -iF "ntlm"
+NT
+
+
+- What is the cracked value of this password?
+hint: john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt ntlm.txt
+john --show --format=NT ntlm.txt
+mushroom
+
+
+#Task 6 Cracking /etc/shadow Hashes 
+- Now, see if you can follow the process to crack the password hash of the root user that is provided in the "etchashes.txt" file. Good luck!
+hint: 
+cat etchashes.txt
+This is everything I managed to recover from the target machine before my computer crashed... See if you can crack the hash so we can at least salvage a password to try and get back in.
+
+root:x:0:0::/root:/bin/bash
+root:$6$Ha.d5nGupBm29pYr$yugXSk24ZljLTAZZagtGwpSQhb3F2DOJtnHrvk7HI2ma4GsuioHp8sm3LJiRJpKfIf7lZQ29qgtH17Q/JDpYM/:18576::::::
+
+
+vi hash.txt
+$6$Ha.d5nGupBm29pYr$yugXSk24ZljLTAZZagtGwpSQhb3F2DOJtnHrvk7HI2ma4GsuioHp8sm3LJiRJpKfIf7lZQ29qgtH17Q/JDpYM/
+
+cat hash.txt | hashid -m
+[+] SHA-512 Crypt [Hashcat Mode: 1800]
+
+vi hash2.txt
+root:$6$Ha.d5nGupBm29pYr$yugXSk24ZljLTAZZagtGwpSQhb3F2DOJtnHrvk7HI2ma4GsuioHp8sm3LJiRJpKfIf7lZQ29qgtH17Q/JDpYM/:18576::::::
+
+
+john --list=formats | grep -iF "sha512"
+john --wordlist=/usr/share/wordlist/rockyou.txt --format=sha512crypt hash2.txt 
+john --show --format=sha512crypt hash2.txt 
+1234
+
+
+#Task 7 Single Crack Mode 
+- What is Joker's password?
+vi hash7.txt
+Joker:7bf6d9bb82bed1302f331fc6b816aada
+
+john --single --format=raw-md5 hash7.txt
+john --show hash7.txt --format=raw-md5
+Jok3r
+
+
+#Task 8 Custom Rules 
+- What do custom rules allow us to exploit?
+password complexity predictability
+
+
+
+- What rule would we use to add all capital letters to the end of the word?
+Az"[A-Z]"
+
+
+- What flag would we use to call a custom rule called "THMRules"
+--rule=THMRules
+
+#Task 9 Cracking Password Protected Zip Files 
+
+
+https://tryhackme.com/room/johntheripper0
+
+
+
+
+
+
+
+
+
+
+ 
