@@ -123,7 +123,6 @@ Jok3r
 password complexity predictability
 
 
-
 - What rule would we use to add all capital letters to the end of the word?
 Az"[A-Z]"
 
@@ -132,6 +131,20 @@ Az"[A-Z]"
 --rule=THMRules
 
 #Task 9 Cracking Password Protected Zip Files 
+What is the password for the secure.zip file?
+zip2john secure.zip > secure.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt secure.txt
+john --show secure.txt
+pass123
+
+
+- What is the contents of the flag inside the zip file?
+hint: unzip secure.zip
+pass123
+cat zippy/flag.txt
+THM{w3ll_d0n3_h4sh_r0y4l}
+
+#Task 10 Cracking Password Protected RAR Archives 
 
 
 https://tryhackme.com/room/johntheripper0
