@@ -145,6 +145,20 @@ cat zippy/flag.txt
 THM{w3ll_d0n3_h4sh_r0y4l}
 
 #Task 10 Cracking Password Protected RAR Archives 
+- What is the password for the secure.rar file?
+hint: rar2john secure.rar > hash.txt
+cat hash.txt | hashid -m
+john --wordlist=/usr/share/wordlist/rockyou.txt hash.txt
+john --show hash.txt
+password
+
+
+
+- What is the contents of the flag inside the zip file?
+hint: unrar sercure.rar
+password
+THM{r4r_4rch1ve5_th15_t1m3}
+
 
 
 #Task 11 Cracking SSH Keys with John 
@@ -159,15 +173,11 @@ mango
 
 
 
-
-
 https://tryhackme.com/room/johntheripper0
 https://kenken17.medium.com/thm-john-the-ripper-c9cf80030616
 https://halloper123.medium.com/tryhackme-john-the-ripper-writeup-edbef564bf38
 https://pypi.org/project/hashcrack/
 pip install hashcrack
-
-
 
 
 
