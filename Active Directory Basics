@@ -1,0 +1,129 @@
+#Task 2 Physical Active Directory 
+- What database does the AD DS contain?
+NTDS.dit
+
+
+- Where is the NTDS.dit stored?
+%SystemRoot%\NTDS
+
+
+- What type of machine can be a domain controller?
+Windows server
+
+
+#Task 3 The Forest 
+Forest Overview -
+﻿﻿A forest is a collection of one or more domain trees inside of an Active Directory network. It is what categorizes the parts of the network as a whole.
+The Forest consists of these parts which we will go into farther detail with later:
+    Trees - A hierarchy of domains in Active Directory Domain Services
+    Domains - Used to group and manage objects 
+    Organizational Units (OUs) - Containers for groups, computers, users, printers and other OUs
+    Trusts - Allows users to access resources in other domains
+    Objects - users, groups, printers, computers, shares
+    Domain Services - DNS Server, LLMNR, IPv6
+    Domain Schema - Rules for object creation
+ 
+- What is the term for a hierarchy of domains in a network?
+Tree
+
+
+- What is the term for the rules for object creation?
+Domain Schema
+
+
+- What is the term for containers for groups, computers, users, printers, and other OUs?
+Organizational Units
+
+
+#Task 4 Users + Groups 
+- Which type of groups specify user permissions?
+Security Groups
+
+
+- Which group contains all workstations and servers joined to the domain?
+Domain Computers
+
+
+- Which group can publish certificates to the directory?
+Cert Publishers
+
+
+- Which user can make changes to a local machine but not to a domain controller?
+Local Administrator
+
+
+- Which group has their passwords replicated to read-only domain controllers?
+Allowed RODC Password Replication Group
+
+
+#Task 5 Trusts + Policies 
+Domain Policies Overview - 
+Policies are a very big part of Active Directory, they dictate how the server operates and what rules it will and will not follow. You can think of domain policies like domain groups, except instead of permissions they contain rules, and instead of only applying to a group of users, the policies apply to a domain as a whole. They simply act as a rulebook for Active  Directory that a domain admin can modify and alter as they deem necessary to keep the network running smoothly and securely. Along with the very long list of default domain policies, domain admins can choose to add in their own policies not already on the domain controller, for example: if you wanted to disable windows defender across all machines on the domain you could create a new group policy object to disable Windows Defender. The options for domain policies are almost endless and are a big factor for attackers when enumerating an Active Directory network. I'll outline just a few of the  many policies that are default or you can create in an Active Directory environment: 
+    Disable Windows Defender - Disables windows defender across all machine on the domain
+    Digitally Sign Communication (Always) - Can disable or enable SMB signing on the domain controller
+
+
+- What type of trust flows from a trusting domain to a trusted domain?
+Directional
+
+
+- What type of trusts expands to include other trusted domains?
+Transitive
+
+
+#Task 6 Active Directory Domain Services + Authentication 
+- What type of authentication uses tickets? 
+Kerberos
+
+
+- What domain service can create, validate, and revoke public key certificates?
+Certificate Services
+
+
+#Task 7 AD in the Cloud 
+- What is the Azure AD equivalent of LDAP?
+REST APIs
+
+
+- What is the Azure AD equivalent of Domains and Forests?
+Tenants
+
+
+- What is the Windows Server AD equivalent of Guests?
+Trusts
+
+
+#Task 8 Hands-On Lab 
+- What is the name of the Windows 10 operating system?
+https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993
+hint: ssh administrator@10.10.77.71
+C:\Users\Administrator>powershell -ep bypass
+cd Downloads
+.\PowerView.ps1
+Get-NetComputer -fulldata | select operatingsystem
+Windows 10 Enterprise Evaluation
+
+
+
+- What is the second "Admin" name?
+hint: Get-NetUser | select cn
+or Get-NetlocalGroup
+Admin2
+
+
+- Which group has a capital "V" in the group name?
+hint: Get-NetGroup -GroupName *
+or net localgroup
+Hyper-V Administrators
+
+
+- When was the password last set for the SQLService user?
+hint: Get-NetUser -SPN | ?{$_.memberof -match 'Domain Admins'}
+or Get-ADUser -identity SQLService -properties * | findstr "Password"
+or get-netuser | Select Displayname,pwdlastset | findstr SQL
+5/13/2020 8:26:58 PM
+
+
+https://tryhackme.com/room/activedirectorybasics
+https://fthcyber.com/2020/10/15/active-directory-basics-writeup-tryhackme/
+https://www.thedutchhacker.com/active-directory-basics-on-tryhackme/
