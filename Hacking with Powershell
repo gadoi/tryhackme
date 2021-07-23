@@ -1,3 +1,65 @@
+#Task 2 What is Powershell? 
+- What is the command to get help about a particular cmdlet(without any parameters)?
+Get-Help
+
+
+#Task 3 Basic Powershell Commands 
+- What is the location of the file "interesting-file.txt"
+hint: Get-ChildItem -Path C:\ -Include *interesting-file.txt* -File -Recurse -ErrorAction SilentlyContinue
+c:\program files\
+
+- Specify the contents of this file
+Get-Content 'C:\Program Files\interesting-file.txt.txt'
+notsointerestingcontent
+
+- How many cmdlets are installed on the system(only cmdlets, not functions and aliases)?
+hint: get-command -CommandType cmdlet | measure
+6638
+
+
+- Get the MD5 hash of interesting-file.txt
+hint: Get-FileHash -path "C:\Program Files\interesting-file.txt.txt" -Algorithm md5
+49A586A2A9456226F8A1B4CEC6FAB329
+
+- What is the command to get the current working directory?
+get-location
+
+
+
+- Does the path "C:\Users\Administrator\Documents\Passwords" Exist(Y/N)?
+hint: get-location -path "C:\Users\Administrator\Documents\Passwords"
+N
+
+- What command would you use to make a request to a web server?
+hint:
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7.1&viewFallbackFrom=powershell-6
+Invoke-WebRequest
+
+
+
+- Base64 decode the file b64.txt on Windows. 
+hint: get-childitem -path c:\ -include b64.txt -Recurse -File -ErrorAction SilentlyContinue
+C:\Users\Administrator\Desktop\b64.txt
+certutil -decode C:\Users\Administrator\Desktop\b64.txt out.txt
+get-content out.txt
+or more out.txt
+ihopeyoudidthisonwindows
+
+
+#Task 4 Enumeration 
+How many users are there on the machine?
+hint:get-localuser
+5
+
+- Which local user does this SID(S-1-5-21-1394777289-3961777894-1791813945-501) belong to?
+hint: (Get-Command Get-LocalUser).Parameters
+Get-LocalUser -SID "S-1-5-21-1394777289-3961777894-1791813945-501"
+Guest
+
+- How many users have their password required values set to False?
+hint: Get-LocalUser | Where-Object -Property PasswordRequired -Match false
+4
+
 https://tryhackme.com/room/powershell
 https://github.com/edoardottt/tryhackme-ctf/tree/main/Hacking-with-Powershell <-- all ok
 https://cd6629.gitbook.io/ctfwriteups/converting-metasploit-modules-to-python/hacking-with-powershell-wlk <-- all ok
