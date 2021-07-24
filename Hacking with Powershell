@@ -60,6 +60,156 @@ Guest
 hint: Get-LocalUser | Where-Object -Property PasswordRequired -Match false
 4
 
+- How many local groups exist?
+hint: get-localgroup | measure
+24
+
+- What command did you use to get the IP address info?
+hint: find comand get-command | where-object -property name -like "*ip*" | where-object -property name -like "*address*"
+get-netipaddress
+
+
+- How many ports are listed as listening?
+hint: get-nettcpconnection|where-object state -match listen|measure
+20
+What is the remote address of the local port listening on port 445?
+hint: get-nettcpconnection|where-object state -match listen
+::
+
+- How many patches have been applied?
+hint: get-hotfix|measure
+20
+
+
+- When was the patch with ID KB4023834 installed?
+Get-HotFix|Where-Object -Property HotfixID -Match "KB4023834"
+
+6/15/2017 12:00:00 AM
+
+
+
+- Find the contents of a backup file.
+hint: Get-ChildItem -Path c:\ -Include *.bak* -File -Recurse -ErrorAction SilentlyContinue
+C:\Program Files (x86)\Internet Explorer
+or Get-ChildItem -Path c:\ -Include *.bak* -File -Recurse -ErrorAction SilentlyContinue|get-content
+backpassflag
+
+
+
+- Search for all files containing API_KEY
+hint: get-childitem -file -recurse -force -erroraction silentlycontinue -path c:\ | select-string -pattern API_KEY | select path
+c:\users\public\music\config.xml
+get-content c:\users\public\music\config.xml
+fakekey123
+or Get-ChildItem C:\* -Recurse | Select-String -pattern API_KEY
+fakekey123
+
+
+- What command do you do to list all the running processes?
+hint: get-command | where-object -property name -like “*get*” | where-object -property name -like “*process*”
+get-process
+
+
+- What is the path of the scheduled task called new-sched-task?
+hint: get-schedule -taskname new-sched-task 
+or get-scheduledtask | where-object -property TaskName -like “*new-sched-task*”
+\
+
+- Who is the owner of the C:\
+hint: get-acl c:\
+NT SERVICE\TrustedInstaller
+
+#Task 5 Basic Scripting Challenge 
+- What file contains the password?
+hint:
+cd c:\users\administrator\Desktop
+Get-ChildItem -path .\emails\ -Recurse | Select-String -Pattern password
+
+or open powershell ISE
+####
+$path = "C:\Users\Administrator\Desktop\emails\*"
+$string_pattern = "password"
+$command = Get-childitem -Path $path -Recurse | Select-String -Pattern $String_pattern
+echo $command
+####
+save file to pass.ps1
+.\pass.ps1
+Doc3M
+
+- What is the password?
+johnisalegend99
+
+
+
+- What files contains an HTTPS link?
+hint: Get-ChildItem -path .\emails\ -Recurse | Select-String -Pattern https
+or open powershell ise
+###
+####
+$path = "C:\Users\Administrator\Desktop\emails\*"
+$string_pattern = "https"
+$command = Get-childitem -Path $path -Recurse | Select-String -Pattern $String_pattern
+echo $command
+####
+####
+save file to https.ps1
+.\https.ps1
+doc2mary
+
+
+OR to answer 2 question above
+write script:
+####
+$emails = "C:\users\Administrator\Desktop\emails\*"
+$word_search1 = "password"
+$word_search2 = "https"
+$find_password = get-childitem -recurse $emails | select-string -pattern $word_search1
+$find_https_link = get-childitem -recurse $emails | select-string -pattern $word_search2
+echo ""
+echo "Instances of 'Password'"
+echo ""
+echo $find_password
+echo ""
+echo "Instances of 'Https'"
+echo ""
+echo $find_https_link
+echo ""
+echo "Done!"
+###
+save 2question.ps1
+.\2question.ps1
+
+
+#Task 6 Intermediate Scripting 
+- How many open ports did you find between 130 and 140(inclusive of those two)?
+
+####
+$localhost = "127.0.0.1"
+$Start_Port = "130"
+$End_Port = "140"
+$ErrorActionPreference= ‘silentlycontinue’
+Foreach($port in $Start_Port..$End_Port){
+If(Test-Connection –BufferSize 32 –Count 1 –quiet –ComputerName "localhost")
+{ $socket = new-object System.Net.Sockets.TcpClient($localhost,$port)
+If($socket.Connected) { “Port $port open!” } else
+{ “Port $port not open!” }
+}
+}
+####
+save portscan.ps1
+.\portscan.ps1
+
+OR
+###
+for($i=130; $i -le 140; $i++){
+    Test-NetConnection localhost -Port $i
+}
+###
+save pscan.ps1
+.\pscan.ps1
+11
+
+
 https://tryhackme.com/room/powershell
 https://github.com/edoardottt/tryhackme-ctf/tree/main/Hacking-with-Powershell <-- all ok
 https://cd6629.gitbook.io/ctfwriteups/converting-metasploit-modules-to-python/hacking-with-powershell-wlk <-- all ok
