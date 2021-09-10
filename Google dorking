@@ -1,0 +1,63 @@
+#Task 2 Let's Learn About Crawlers 
+- Name the key term of what a "Crawler" is used to do
+hint: The first answer can be found reading this paragraph or (ctrl+f) searching for the word “crawler” and seeing what sentences contains a word that is the answer:
+index
+
+
+- What is the name of the technique that "Search Engines" use to retrieve this information about websites?
+Crawling
+
+
+- What is an example of the type of contents that could be gathered from a website?
+hint: Searching for the word “content” will help with this answer. The question has a couple of possible answers of the type of content that can be gathered from a website. It could be urls to other websites posted on the crawled website, could be information on specific subjects, or keywords.
+keywords
+
+#Task 4 Beepboop - Robots.txt 
+- Where would "robots.txt" be located on the domain "ablog.com"
+ablog.com/robots.txt
+
+
+- If a website was to have a sitemap, where would that be located?
+/sitemap.xml
+
+- How would we only allow "Bingbot" to index the website?
+User-agent: Bingbot
+
+- How would we prevent a "Crawler" from indexing the directory "/dont-index-me/"?
+Disallow: /dont-index-me/
+
+- What is the extension of a Unix/Linux system configuration file that we might want to hide from "Crawlers"?
+.conf
+
+# Task 5 Sitemaps 
+- What is the typical file structure of a "Sitemap"?
+XML
+
+
+- What real life example can "Sitemaps" be compared to?
+map
+
+
+- Name the keyword for the path taken for content on a website
+hint: The first explanation of routes are in the lesson’s sentence “The blue rectangles represent the route to nested-content, similar to a directory I.e. “Products” for a store.”
+route
+
+#Task 6 What is Google Dorking? 
+- What would be the format used to query the site bbc.co.uk about flood defences
+site: bbc.co.uk flood defences
+
+- What term would you use to search by file type?
+filetype:
+
+- What term can we use to look for login pages?
+intitle: login
+
+
+
+https://tryhackme.com/room/googledorking
+
+https://apsychogirl.medium.com/tryhackme-google-dorking-1d7bb01e0a2e
+https://zacheller.dev/adv-google
+https://fthcyber.com/2020/09/24/google-dorking-writeup-tryhackme/
+
+https://telegra.ph/Google-Dorks-And-Google-Hacking-02-06
