@@ -54,7 +54,8 @@ answer right: 2.4.99
 
 
 #Task 5 Scanning a Web Application! 
-
+Run a Web Application scan on the VM!
+Use Web Applications Tests
 
 - What is the plugin id of the plugin that determines the HTTP server type and version?
 10107
