@@ -48,7 +48,7 @@ Nessus SYN scanner
 
 
 - What Apache HTTP Server Version is reported by Nessus?
-hint: scan right: Apache/2.4.25 (Debian)
+hint: Apache/2.4.25 (Debian) <--wrong
 answer right: 2.4.99 
 
 
