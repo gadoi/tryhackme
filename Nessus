@@ -66,7 +66,13 @@ login.php
 
 
 - What is the file extension of the config backup?
-.bak
+Backup Files Disclosure
+Output
+    It is possible to read the following backup file :
+      - File : /config/config.inc.php.bak
+        URL  : http://10.10.93.230/config/config.inc.php.bak
+        
+answer: .bak
 
 
 
