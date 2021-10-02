@@ -1,0 +1,148 @@
+ssh chad@10.10.126.149
+#Task 2 ls 
+- How do you run the ls command?
+ls
+
+- How do you run the ls command to show all the files inside the folder?
+ls -a
+
+- How do you run the ls command to not show the current directory and the previous directory in the output? (almost everything)
+ls -A
+
+
+- How do you show the information in a long listing format using ls?
+ls -l
+
+
+- How do you show the size in readable format? e.g. k, Mb, etc
+ls -h
+
+
+- How do you do a recursive ls?
+ls --recursive
+
+
+- How many files did you locate in the home folder of the user?(non-hidden and not inside other folders)
+13
+
+
+#Task 3 cat 
+
+- What is the content of cat.txt?
+THM{11aadbee391acdffee901}
+
+- What is the content of tac.txt?
+THM{acab0111aaa687912139}
+
+
+- What is the content of head.txt?
+THM{894abac55f7962abc166}
+
+
+- What is the content of tail.txt?
+THM{1689acafdd20751acff6}
+
+
+- What is the content of the xxd.txt?
+THM{fac1aab210d6e4410acd}
+
+
+- What is the content of base64.txt?
+THM{aa462c1b2d44801c0a31}
+
+
+#Task 4 find 
+
+- How many .txt files did you find in the current folder?
+hint:find -name "*.txt"
+8
+
+- How many SUID files have you found inside the home folder?
+hint: find -type f -perm 4000
+0
+
+
+#Task 5 grep 
+- How many times does the word "hacker" appear in the grep files? (including variations)
+hint: grep -i "hacker" grep.txt grep1.txt 
+or cat grep.txt grep1.txt | grep hacker
+15
+
+# Task 6 sudo 
+- Is the user allowed to run the above command? (Yay/Nay)
+Nay
+
+
+#Task 7 chmod 
+no answer
+
+#Task 8 echo 
+What command would you use to echo the word "Hackerman" ?
+echo "Hackerman"
+
+#Task 9 xargs 
+How would you read all files with extension .bak using xargs?
+find / -name *.bak -type f - print | xargs /bin/cat
+
+
+#Task 11 curl 
+How would you grab the headers silently of https://tryhackme.com but grepping only the HTTP status code?
+curl -I -s https://tryhackme.com | grep http
+
+
+# Task 12 wget 
+- What command would you run to get the flag.txt from https://tryhackme.com/ ?
+wget https://tryhackme.com/flag.txt
+
+
+- What command would you run to download recursively up to level 5 from https://tryhackme.com ?
+wget -r -l https://tryhackme.com/ 
+
+
+#Task 13 tar 
+- What is the flag from the tar file?
+hint: tar -xf tarball.tar
+cat flag.txt
+THM{C0FFE1337101}
+
+#Task 14 gzip 
+- What is the content of gzip.txt?
+gzip gzip.txt.gz -d
+cat gzip.txt
+THM{0AFDECC951A}
+
+
+#Task 15 7zip 
+- What is the flag inside the 7zip file?
+7z x zip.7z
+cat 7zip.txt
+THM{526accdf94}
+
+
+#Task 16 binwalk 
+- What is the content of binwalk.txt?
+hint: binwalk -e binwalk.png
+find -name "*.txt"
+./flag.txt
+./gzip.txt
+./nothing3.txt
+./head.txt
+./grep.txt
+./nothing1.txt
+./base64.txt
+./tac.txt
+./tail.txt
+./cat.txt
+./grep1.txt
+./nothing2.txt
+./xxd.txt
+./7zip.txt
+./_binwalk.png.extracted/binwalk.txt
+
+cat _binwalk.png.extracted/binwalk.txt
+THM{af5548a12bc2de}
+
+
+
+https://tryhackme.com/room/nislinuxone
+https://shamsher-khan-404.medium.com/nis-linux-part-i-tryhackme-writeup-e873ee87397f
