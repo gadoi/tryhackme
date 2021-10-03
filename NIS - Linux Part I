@@ -82,7 +82,7 @@ echo "Hackerman"
 
 #Task 9 xargs 
 How would you read all files with extension .bak using xargs?
-find / -name *.bak -type f - print | xargs /bin/cat
+find / -name *.bak -type f -print | xargs /bin/cat
 
 
 #Task 11 curl 
