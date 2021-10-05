@@ -1,0 +1,164 @@
+#Task 3 ATT&CK® Framework 
+https://attack.mitre.org/
+- Only blue teamers will use the ATT&CK Matrix? (Yay/Nay) 
+Nay
+
+
+- What is the ID for this technique?
+hint: https://attack.mitre.org/techniques/T1566/
+T1566
+
+- Based on this technique, what mitigation covers identifying social engineering techniques?
+hint: https://attack.mitre.org/techniques/T1566/
+search--> social engineering
+answer: User Training
+
+
+- There are other possible areas for detection for this technique, which occurs after what other technique?
+hint: https://attack.mitre.org/techniques/T1566/
+Detection
+answer: User Execution
+
+
+- What group has used spear phishing in their campaigns?
+hint: https://attack.mitre.org/techniques/T1566/
+Dragonfly
+
+- Based on the information for this group, what are their associated groups?
+hint: https://attack.mitre.org/groups/G0035/
+answer: TG-4192, Crouching Yeti, IRON LIBERTY, Energetic Bear
+
+- What tool is attributed to this group to transfer tools or files from one host to another within a compromised environment?
+hint: https://attack.mitre.org/groups/G0035/
+answer: psexec
+
+
+- Based on the information about this tool, what group used a customized version of it?
+hint:https://attack.mitre.org/software/S0029/
+answer: FIN5
+
+- This group has been active since what year?
+hint: https://attack.mitre.org/groups/G0053/
+2008
+
+
+- Instead of Mimikatz, what OS Credential Dumping tool does this group use?
+hint: https://attack.mitre.org/groups/G0053/
+Windows Credential Editor 
+
+
+#Task 4 CAR Knowledge Base 
+- For the above analytic, what is the pseudocode a representation of?
+Splunk search
+
+
+- What tactic has an ID of TA0003? 
+hint: https://attack.mitre.org/tactics/TA0003/
+Persistence
+
+
+- What is the name of the library that is a collection of Zeek (BRO) scripts?
+hint: https://car.mitre.org/
+search --- zeek
+BZAR
+
+
+- What is the name of the technique for running executables with the same hash and different names?
+hint: https://car.mitre.org/analytics/
+search --->hash
+Masquerading
+
+
+- Examine CAR-2013-05-004, what additional information is provided to analysts to ensure coverage for this technique?
+hint: https://car.mitre.org/analytics/CAR-2013-05-004/
+Unit Tests
+
+
+#Task 5 Shield Active Defense 
+https://shield.mitre.org/
+
+- Which Shield tactic has the most techniques?
+hint: https://shield.mitre.org/matrix/
+Detect
+
+- Is the technique 'Decoy Credentials' listed under the tactic from question #1? (Yay/Nay) 
+Yay
+
+
+- Explore DTE0011, what is the ID where a defender can plant artifacts on a system to make it look like a virtual machine to the adversary?
+hint: https://shield.mitre.org/techniques/
+search DTE0011
+--->https://shield.mitre.org/techniques/DTE0011/
+answer: DUC0234
+
+
+- Based on the above use case, what is its ATT&CK® Technique mapping?
+hint: https://shield.mitre.org/attack_mapping/mapping_all
+search ---> virtual
+T1497
+
+- Continuing from the previous question, look at the information for this ATT&CK® Technique, what 2 programs are listed that adversary's will check for?
+hint: https://attack.mitre.org/techniques/T1497/
+Sysinternals and Wireshark
+
+
+#Task 6 ATT&CK® Emulation Plans 
+
+How many phases does APT3 Emulation Plan consists of?
+hint: https://attack.mitre.org/resources/adversary-emulation-plans/
+3
+
+
+- Under Persistence, what binary was replaced with cmd.exe?
+https://attack.mitre.org/docs/APT3_Adversary_Emulation_Plan.pdf
+view Persistence
+answer: sethc.exe
+
+
+Examining APT29, what 2 tools were used to execute the first scenario?
+hint: https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/apt29/Emulation_Plan/Scenario_1/Infrastructure.md
+https://github.com/center-for-threat-informed-defense/adversary_emulation_library/tree/master/apt29
+pupy and metasploit
+
+
+What tool was used to execute the second scenario?
+hint: https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/apt29/Emulation_Plan/Scenario_2/Infrastructure.md
+answer: poshC2
+
+
+#Task 7 ATT&CK® and Threat Intelligence 
+- What is a group that targets your sector who has been in operation since at least 2013? 
+hint: https://attack.mitre.org/groups/
+find --> 2013
+answer: APT33
+
+
+- Does this group use Stuxnet? (Yay/Nay)
+Nay
+
+
+- As your organization is migrating to the cloud, is there anything attributed to this APT group that you should focus on? If so, what is it?
+hint: https://attack.mitre.org/groups/G0064/
+find --> cloud
+answer: cloud account
+
+
+- What tool is associated with this technique?
+hint:https://attack.mitre.org/techniques/T1078/004/
+answer: Ruler
+
+
+- Per the detection tip, what should you be detecting?
+hint:https://attack.mitre.org/techniques/T1078/004/
+Detection
+answer:  abnormal or malicious behavior
+
+
+- What platforms does this affect?
+hint: https://attack.mitre.org/techniques/T1078/004/
+Azure AD, Google Workspace, IaaS, Office 365, SaaS 
+
+https://tryhackme.com/room/mitre
+https://bravotwoable.com/courses/tryhackme/mitre/
+https://www.thedutchhacker.com/mitre-on-tryhackme/
+https://blog.csdn.net/qq_36531487/article/details/119673831#t13
