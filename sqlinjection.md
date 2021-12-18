@@ -47,6 +47,8 @@ What about listing all databases on the same website? (URL switch comes first)
 sqlmap -u "sqli.thm/login.php" --dbs
 
 https://tryhackme.com/room/sqlibasics
+https://www.kumaratuljaiswal.in/2021/05/learn-to-perform-sqli-attacks.html
+
 
 Congratulations! You have successfully gone through the major part of SQLi. Now, with all that knowledge it won't take long for you to pick up on small tricks and tactics by reading and researching more. I have attached a some further SQLi resources for you to explore. Enjoy!
 
